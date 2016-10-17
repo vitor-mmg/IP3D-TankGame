@@ -1,0 +1,9 @@
+c:\users\vitor\documents\visual studio 2013\Projects\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\PrimeiraEntrega.exe
+c:\users\vitor\documents\visual studio 2013\Projects\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\PrimeiraEntrega.pdb
+c:\users\vitor\documents\visual studio 2013\Projects\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\MonoGame.Framework.dll
+c:\users\vitor\documents\visual studio 2013\Projects\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\OpenTK.dll
+c:\users\vitor\documents\visual studio 2013\Projects\PrimeiraEntrega\PrimeiraEntrega\obj\x86\Debug\PrimeiraEntrega.csprojResolveAssemblyReference.cache
+c:\users\vitor\documents\visual studio 2013\Projects\PrimeiraEntrega\PrimeiraEntrega\obj\x86\Debug\PrimeiraEntrega.exe
+c:\users\vitor\documents\visual studio 2013\Projects\PrimeiraEntrega\PrimeiraEntrega\obj\x86\Debug\PrimeiraEntrega.pdb
+c:\users\vitor\documents\visual studio 2013\Projects\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\pepe.png
+c:\users\vitor\documents\visual studio 2013\Projects\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\terreno.jpg
