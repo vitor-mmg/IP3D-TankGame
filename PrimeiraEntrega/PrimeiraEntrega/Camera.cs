@@ -34,12 +34,11 @@ namespace PrimeiraEntrega
         static public int worldSize = 700;
         //Near e far plane
         static public float nearPlane = 0.1f;
-        static public float farPlane = worldSize / 3;
+        static public float farPlane = worldSize ;
 
-        /// <summary>
+        
         /// Inicializa os componentes da camara
-        /// </summary>
-        /// <param name="graphics">Instância de GraphicsDevice</param>
+
         static public void Initialize(GraphicsDevice graphics)
         {
             //Posição inicial da camâra
@@ -66,9 +65,9 @@ namespace PrimeiraEntrega
             originalMouseState = Mouse.GetState();
         }
 
-        /// <summary>
+        
         /// Calcula e atualiza a ViewMatrix para cada frame, consoante a posição e rotação da camâra
-        /// </summary>
+    
         static private void UpdateViewMatrix()
         {
             //Cálculo da matriz de rotação
@@ -77,20 +76,17 @@ namespace PrimeiraEntrega
             Vector3 cameraOriginalTarget = new Vector3(0, 0, -1);
             Vector3 cameraRotatedTarget = Vector3.Transform(cameraOriginalTarget, cameraRotation);
             Vector3 cameraFinalTarget = position + cameraRotatedTarget;
+            
             //Cálculo do vector Up
             Vector3 cameraOriginalUpVector = new Vector3(0, 1, 0);
             Vector3 cameraRotatedUpVector = Vector3.Transform(cameraOriginalUpVector, cameraRotation);
+           
             //Matriz View
             View = Matrix.CreateLookAt(position, cameraFinalTarget, cameraRotatedUpVector);
-            //Atualiza o frustum
+            
             frustum = new BoundingFrustum(View * Projection);
         }
 
-        /// <summary>
-        /// Implementa os controlos da camâra
-        /// </summary>
-        /// <param name="amount">Tempo decorrido desde o ultimo update</param>
-        /// <param name="graphics">Instância de graphicsDevice</param>
         static private void ProcessInput(float amount, GraphicsDevice graphics)
         {
             //Movimento do rato
@@ -130,10 +126,9 @@ namespace PrimeiraEntrega
             AddToCameraPosition(moveVector * amount);
         }
 
-        /// <summary>
+        
         /// Atualiza a posição da camâra
-        /// </summary>
-        /// <param name="vectorToAdd"></param>
+     
         static private void AddToCameraPosition(Vector3 vectorToAdd)
         {
             Matrix cameraRotation = Matrix.CreateRotationX(updownRot) * Matrix.CreateRotationY(leftrightRot);
@@ -142,11 +137,9 @@ namespace PrimeiraEntrega
             UpdateViewMatrix();
         }
 
-        /// <summary>
+        
         /// Atualiza os parâmetros da camâra
-        /// </summary>
-        /// <param name="gameTime">Instância de gameTime</param>
-        /// <param name="graphics">Instância de graphicsDevice</param>
+    
         static public void Update(GameTime gameTime, GraphicsDevice graphics)
         {
             float timeDifference = (float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
