@@ -9,33 +9,35 @@ using Microsoft.Xna.Framework.Content;
 
 namespace PrimeiraEntrega
 {
-    class Terrreno
+    class Terreno
     {
-     /*   
-        static public VertexPositionNormalTexture[] vertices;
+        //Array de vértices
+        static public VertexPositionNormalTexture[] vertexes;
 
+        //Array de índices
         static private int[] indexes;
 
-        //array para os texels
-        static Color[] txls;
+        //Array de texels
+        static Color[] texels;
 
-        static private VertexBuffer vbuffer;
-        static private IndexBuffer ibufer;
-
+        //Buffers
+        static private VertexBuffer vertexBuffer;
+        static private IndexBuffer indexBuffer;
 
         static SamplerState sampler;
 
+        //Dimensões do terreno
         static public int altura;
 
-        static public void GerarTerreno(GraphicsDevice graphics, Texture2D heighmap)
+        static public void GenerateTerrain(GraphicsDevice graphics, Texture2D heightmap)
         {
-            //so it begins
-            txls = new Color[heighmap.Width * heighmap.Height];
-            heighmap.GetData<Color>(txls);
 
-            altura = heighmap.Height;
+            //Gerar texels a partir do heightmap
+            texels = new Color[heightmap.Width * heightmap.Width];
+            heightmap.GetData<Color>(texels);
 
-            vertices = new VertexPositionNormalTexture[altura * altura];
+            altura = heightmap.Height;
+            vertexes = new VertexPositionNormalTexture[altura * altura];
 
             //Gerar vértices
             int x = 0, z = 0;
@@ -45,7 +47,6 @@ namespace PrimeiraEntrega
                 {
                     //Calcular coordenadas da textura
                     int u, v;
-
                     u = (x % 2 == 0) ? 0 : 1;
                     v = (z % 2 == 0) ? 0 : 1;
 
@@ -53,8 +54,8 @@ namespace PrimeiraEntrega
                     //bigaltura (512 * 512): 0.2f;
                     //altura (128 * 128): 0.04f;
                     float scale = 0.04f;
-                    vertices[(2 * j * altura) + i] = new VertexPositionNormalTexture(
-                        new Vector3(x, txls[(z * altura + x)].R * scale, z),
+                    vertexes[(2 * j * altura) + i] = new VertexPositionNormalTexture(
+                        new Vector3(x, texels[(z * altura + x)].R * scale, z),
                         Vector3.Zero,
                         new Vector2(u, v));
                     z++;
@@ -64,12 +65,10 @@ namespace PrimeiraEntrega
                         x++;
                         z = 0;
                     }
+
                 }
 
-
             }
-
-
 
             //Gerar índices
             indexes = new int[(altura * 2) * (altura - 1)];
@@ -84,93 +83,369 @@ namespace PrimeiraEntrega
             CalcularNormais();
 
             //Passar informação para o GPU
-            vbuffer = new VertexBuffer(graphics,
-                typeof(VertexPositionNormalTexture), vertices.Length, 
+            vertexBuffer = new VertexBuffer(graphics,
+                typeof(VertexPositionNormalTexture), vertexes.Length,
                 BufferUsage.WriteOnly);
-            vbuffer.SetData<VertexPositionNormalTexture>(vertices);
+            vertexBuffer.SetData<VertexPositionNormalTexture>(vertexes);
 
-            ibufer = new IndexBuffer(graphics, typeof(int), indexes.Length, BufferUsage.WriteOnly);
-            ibufer.SetData<int>(indexes);
+            indexBuffer = new IndexBuffer(graphics, typeof(int), indexes.Length, BufferUsage.WriteOnly);
+            indexBuffer.SetData<int>(indexes);
 
             //Definir os buffers a utilizar
-            graphics.SetVertexBuffer(vbuffer);
-            graphics.Indices = ibufer;
+            graphics.SetVertexBuffer(vertexBuffer);
+            graphics.Indices = indexBuffer;
 
             //Ativa o anisotropic filtering
             sampler = new SamplerState();
             sampler.Filter = TextureFilter.Anisotropic;
             sampler.MaxAnisotropy = 4;
         }
+
         static private void CalcularNormais()
         {
-            //
+            //Cria as normais do interior do terreno
+            for (int i = altura + 1; i < vertexes.Count() - altura - 1; i++)
+            {
+                Vector3 v1 = Vector3.Zero;
+                Vector3 v2 = Vector3.Zero;
+                Vector3 v3 = Vector3.Zero;
+                Vector3 v4 = Vector3.Zero;
+                Vector3 v5 = Vector3.Zero;
+                Vector3 v6 = Vector3.Zero;
+                Vector3 v7 = Vector3.Zero;
+                Vector3 v8 = Vector3.Zero;
+                Vector3 v9 = Vector3.Zero;
+
+                v1 = vertexes[i].Position;
+                v2 = vertexes[i + 1].Position;
+                v3 = vertexes[i + 1 - altura].Position;
+                v4 = vertexes[i - altura].Position;
+                v5 = vertexes[i - 1 - altura].Position;
+                v6 = vertexes[i - 1].Position;
+                v7 = vertexes[i - 1 + altura].Position;
+                v8 = vertexes[i + altura].Position;
+                v9 = vertexes[i + 1 + altura].Position;
+
+                Vector3 vt1 = v2 - v1;
+                Vector3 vt2 = v3 - v1;
+                Vector3 vt3 = v4 - v1;
+                Vector3 vt4 = v5 - v1;
+                Vector3 vt5 = v6 - v1;
+                Vector3 vt6 = v7 - v1;
+                Vector3 vt7 = v8 - v1;
+                Vector3 vt8 = v9 - v1;
+
+                Vector3 normal = Vector3.Cross(vt2, vt1);
+                normal.Normalize();
+                Vector3 normal1 = Vector3.Cross(vt3, vt2);
+                normal1.Normalize();
+                Vector3 normal2 = Vector3.Cross(vt4, vt3);
+                normal2.Normalize();
+                Vector3 normal3 = Vector3.Cross(vt5, vt4);
+                normal3.Normalize();
+                Vector3 normal4 = Vector3.Cross(vt6, vt5);
+                normal4.Normalize();
+                Vector3 normal5 = Vector3.Cross(vt7, vt6);
+                normal5.Normalize();
+                Vector3 normal6 = Vector3.Cross(vt8, vt7);
+                normal6.Normalize();
+                Vector3 normal7 = Vector3.Cross(vt1, vt8);
+                normal7.Normalize();
+
+                Vector3 normal8 = (normal + normal1 + normal2 + normal3 + normal4 + normal5 + normal6 + normal7) / 8;
+                vertexes[i].Normal = normal8;
+            }
+            //Criar Normais para a primeira coluna, sem contar com os cantos           
+            for (int z = altura; z < vertexes.Count() - altura; z = z + altura)
+            {
+                Vector3 v1 = Vector3.Zero;
+                Vector3 v2 = Vector3.Zero;
+                Vector3 v3 = Vector3.Zero;
+                Vector3 v4 = Vector3.Zero;
+                Vector3 v5 = Vector3.Zero;
+                Vector3 v6 = Vector3.Zero;
+
+                v1 = vertexes[z].Position;
+                v2 = vertexes[z - altura].Position;
+                v3 = vertexes[z + altura].Position;
+                v4 = vertexes[z + 1].Position;
+                v5 = vertexes[z - altura + 1].Position;
+                v6 = vertexes[z + altura + 1].Position;
+
+                Vector3 vt1 = v2 - v1;
+                Vector3 vt2 = v5 - v1;
+                Vector3 vt3 = v4 - v1;
+                Vector3 vt4 = v6 - v1;
+                Vector3 vt5 = v3 - v1;
+
+                Vector3 normal = Vector3.Cross(vt2, vt1);
+                normal.Normalize();
+                Vector3 normal1 = Vector3.Cross(vt3, vt2);
+                normal1.Normalize();
+                Vector3 normal2 = Vector3.Cross(vt4, vt3);
+                normal2.Normalize();
+                Vector3 normal3 = Vector3.Cross(vt5, vt4);
+                normal3.Normalize();
+                Vector3 normal4 = (normal + normal1 + normal2 + normal3) / 4;
+
+                vertexes[z].Normal = -normal4;
+            }
+
+            //Criar Normais para a última coluna, sem contar com os cantos           
+            for (int z = altura * 2 - 1; z < vertexes.Count() - altura; z = z + altura)
+            {
+                Vector3 v1 = Vector3.Zero;
+                Vector3 v2 = Vector3.Zero;
+                Vector3 v3 = Vector3.Zero;
+                Vector3 v4 = Vector3.Zero;
+                Vector3 v5 = Vector3.Zero;
+                Vector3 v6 = Vector3.Zero;
+
+                v1 = vertexes[z].Position;
+                v2 = vertexes[z - altura].Position;
+                v3 = vertexes[z + altura].Position;
+                v4 = vertexes[z - 1].Position;
+                v5 = vertexes[z - altura - 1].Position;
+                v6 = vertexes[z + altura - 1].Position;
+
+                Vector3 vt1 = v2 - v1;
+                Vector3 vt2 = v5 - v1;
+                Vector3 vt3 = v4 - v1;
+                Vector3 vt4 = v6 - v1;
+                Vector3 vt5 = v3 - v1;
+
+                Vector3 normal = Vector3.Cross(vt2, vt1);
+                normal.Normalize();
+                Vector3 normal1 = Vector3.Cross(vt3, vt2);
+                normal1.Normalize();
+                Vector3 normal2 = Vector3.Cross(vt4, vt3);
+                normal2.Normalize();
+                Vector3 normal3 = Vector3.Cross(vt5, vt4);
+                normal3.Normalize();
+                Vector3 normal4 = (normal + normal1 + normal2 + normal3) / 4;
+
+                vertexes[z].Normal = normal4;
+            }
+
+            //Criar normais para a primeira linha, sem contar com os cantos
+            for (int x = 1; x < altura - 1; x++)
+            {
+                Vector3 v1 = Vector3.Zero;
+                Vector3 v2 = Vector3.Zero;
+                Vector3 v3 = Vector3.Zero;
+                Vector3 v4 = Vector3.Zero;
+                Vector3 v5 = Vector3.Zero;
+                Vector3 v6 = Vector3.Zero;
+
+                v1 = vertexes[x].Position;
+                v2 = vertexes[x - 1].Position;
+                v3 = vertexes[x + 1].Position;
+                v4 = vertexes[x + altura].Position;
+                v5 = vertexes[x - 1 + altura].Position;
+                v6 = vertexes[x + altura + 1].Position;
+
+                Vector3 vt1 = v2 - v1;
+                Vector3 vt2 = v5 - v1;
+                Vector3 vt3 = v4 - v1;
+                Vector3 vt4 = v6 - v1;
+                Vector3 vt5 = v3 - v1;
+
+                Vector3 normal = Vector3.Cross(vt2, vt1);
+                normal.Normalize();
+                Vector3 normal1 = Vector3.Cross(vt3, vt2);
+                normal1.Normalize();
+                Vector3 normal2 = Vector3.Cross(vt4, vt3);
+                normal2.Normalize();
+                Vector3 normal3 = Vector3.Cross(vt5, vt4);
+                normal3.Normalize();
+                Vector3 normal4 = (normal + normal1 + normal2 + normal3) / 4;
+
+                vertexes[x].Normal = normal4;
+
+            }
+
+            //Criar normais para a última linha, sem contar com os cantos
+            for (int x = vertexes.Count() - altura + 1; x < vertexes.Count() - 1; x++)
+            {
+                Vector3 v1 = Vector3.Zero;
+                Vector3 v2 = Vector3.Zero;
+                Vector3 v3 = Vector3.Zero;
+                Vector3 v4 = Vector3.Zero;
+                Vector3 v5 = Vector3.Zero;
+                Vector3 v6 = Vector3.Zero;
+
+                v1 = vertexes[x].Position;
+                v2 = vertexes[x - 1].Position;
+                v3 = vertexes[x + 1].Position;
+                v4 = vertexes[x - altura].Position;
+                v5 = vertexes[x - 1 - altura].Position;
+                v6 = vertexes[x - altura + 1].Position;
+
+                Vector3 vt1 = v2 - v1;
+                Vector3 vt2 = v5 - v1;
+                Vector3 vt3 = v4 - v1;
+                Vector3 vt4 = v6 - v1;
+                Vector3 vt5 = v3 - v1;
+
+                Vector3 normal = Vector3.Cross(vt2, vt1);
+                normal.Normalize();
+                Vector3 normal1 = Vector3.Cross(vt3, vt2);
+                normal1.Normalize();
+                Vector3 normal2 = Vector3.Cross(vt4, vt3);
+                normal2.Normalize();
+                Vector3 normal3 = Vector3.Cross(vt5, vt4);
+                normal3.Normalize();
+                Vector3 normal4 = (normal + normal1 + normal2 + normal3) / 4;
+
+                vertexes[x].Normal = -normal4;
+            }
+
+
+
+            //Cria a normal do vértice superior esquerdo
+            for (int i = 0; i < 1; i++)
+            {
+                Vector3 v1 = Vector3.Zero;
+                Vector3 v2 = Vector3.Zero;
+                Vector3 v3 = Vector3.Zero;
+                Vector3 v4 = Vector3.Zero;
+
+                v1 = vertexes[i].Position;
+                v2 = vertexes[i + 1].Position;
+                v3 = vertexes[i + 1 + altura].Position;
+                v4 = vertexes[i + altura].Position;
+
+
+                Vector3 vt1 = v2 - v1;
+                Vector3 vt2 = v3 - v1;
+                Vector3 vt3 = v4 - v1;
+
+                Vector3 normal = Vector3.Cross(vt2, vt1);
+                normal.Normalize();
+                Vector3 normal1 = Vector3.Cross(vt3, vt2);
+                normal1.Normalize();
+                Vector3 normal2 = (normal + normal1) / 2;
+
+                vertexes[i].Normal = -normal2;
+
+            }
+
+            //Cria a normal do vértice superior direito
+            for (int i = altura - 1; i < altura; i++)
+            {
+                Vector3 v1 = Vector3.Zero;
+                Vector3 v2 = Vector3.Zero;
+                Vector3 v3 = Vector3.Zero;
+                Vector3 v4 = Vector3.Zero;
+
+                v1 = vertexes[i].Position;
+                v2 = vertexes[i - 1].Position;
+                v3 = vertexes[i - 1 + altura].Position;
+                v4 = vertexes[i + altura].Position;
+
+
+                Vector3 vt1 = v2 - v1;
+                Vector3 vt2 = v3 - v1;
+                Vector3 vt3 = v4 - v1;
+
+                Vector3 normal = Vector3.Cross(vt2, vt1);
+                normal.Normalize();
+                Vector3 normal1 = Vector3.Cross(vt3, vt2);
+                normal1.Normalize();
+                Vector3 normal2 = (normal + normal1) / 2;
+
+                vertexes[i].Normal = normal2;
+
+            }
+
+            //Cria a normal do vértice inferior esquerdo
+            for (int i = vertexes.Count() - altura; i < vertexes.Count() - altura + 1; i++)
+            {
+                Vector3 v1 = Vector3.Zero;
+                Vector3 v2 = Vector3.Zero;
+                Vector3 v3 = Vector3.Zero;
+                Vector3 v4 = Vector3.Zero;
+
+                v1 = vertexes[i].Position;
+                v2 = vertexes[i + 1].Position;
+                v3 = vertexes[i + 1 - altura].Position;
+                v4 = vertexes[i - altura].Position;
+
+
+                Vector3 vt1 = v2 - v1;
+                Vector3 vt2 = v3 - v1;
+                Vector3 vt3 = v4 - v1;
+
+                Vector3 normal = Vector3.Cross(vt2, vt1);
+                normal.Normalize();
+                Vector3 normal1 = Vector3.Cross(vt3, vt2);
+                normal1.Normalize();
+                Vector3 normal2 = (normal + normal1) / 2;
+
+                vertexes[i].Normal = normal2;
+
+            }
+
+            //Cria a normal do vértice inferior direito
+            for (int i = vertexes.Count() - 1; i < vertexes.Count(); i++)
+            {
+                Vector3 v1 = Vector3.Zero;
+                Vector3 v2 = Vector3.Zero;
+                Vector3 v3 = Vector3.Zero;
+                Vector3 v4 = Vector3.Zero;
+
+                v1 = vertexes[i].Position;
+                v2 = vertexes[i - 1].Position;
+                v3 = vertexes[i - 1 - altura].Position;
+                v4 = vertexes[i - altura].Position;
+
+
+                Vector3 vt1 = v2 - v1;
+                Vector3 vt2 = v3 - v1;
+                Vector3 vt3 = v4 - v1;
+
+                Vector3 normal = Vector3.Cross(vt2, vt1);
+                normal.Normalize();
+                Vector3 normal1 = Vector3.Cross(vt3, vt2);
+                normal1.Normalize();
+                Vector3 normal2 = (normal + normal1) / 2;
+
+                vertexes[i].Normal = -normal2;
+
+            }
         }
+
         
-        */
 
-        
-        BasicEffect effect;
-        Matrix worldMatrix;
-        VertexPositionColorTexture[] vertices;
-        Texture2D textura;
-
-        public Terrreno(GraphicsDevice device, ContentManager content)
+        static public void Draw(GraphicsDevice graphics, BasicEffect efeito)
         {
-            //
-            worldMatrix = Matrix.Identity;
-            textura = content.Load<Texture2D>("terreno");
-            effect = new BasicEffect(device);
-            float aspectRatio = (float)device.Viewport.Width /
-                           device.Viewport.Height;
-            effect.View = Matrix.CreateLookAt(
-                                new Vector3(1.0f, 2.0f, 2.0f),
-                                Vector3.Zero,
-                                Vector3.Up);
-            effect.Projection = Matrix.CreatePerspectiveFieldOfView(
-                               MathHelper.ToRadians(45.0f),
-                               aspectRatio, 1.0f, 10.0f);
-            effect.LightingEnabled = false;
-            effect.VertexColorEnabled = true;
+            //World, View, Projection
+            efeito.World = Matrix.Identity; 
+            efeito.View = Camera.View;
+            efeito.Projection = Camera.Projection;
 
-            //textura
-            effect.TextureEnabled = true;
-            effect.Texture = textura;
 
-            CreateGeometry();
+            graphics.SamplerStates[0] = sampler;
+
+           
+
+       
+            efeito.CurrentTechnique.Passes[0].Apply();
+
+            //Desenhar o terreno, uma strip de cada vez
+            for (int i = 0; i < altura - 1; i++)
+            {
+                graphics.DrawUserIndexedPrimitives(PrimitiveType.TriangleStrip,
+                    vertexes,
+                    i * altura,
+                    altura * 2,
+                    indexes,
+                    0,
+                    altura * 2 - 2);
+            }
+
         }
 
-        private void CreateGeometry()
-        {
-            //falta "endireitar" as coordenadas com o  prisma e 
-
-            int vertexCount = 4;
-            vertices = new VertexPositionColorTexture[vertexCount];
-            vertices[0] = new VertexPositionColorTexture(
-                new Vector3(-2, 0.0f, -2),
-                Color.White, new Vector2(0.0f, 0.0f));
-            vertices[1] = new VertexPositionColorTexture(
-                new Vector3(2, 0.0f, -2),
-                Color.White, new Vector2(1.0f, 0.0f));
-            vertices[2] = new VertexPositionColorTexture(
-                new Vector3(-2, 0.0f, 2),
-                Color.White, new Vector2(0.0f, 1.0f));
-            vertices[3] = new VertexPositionColorTexture(
-                new Vector3(2, 0.0f, 2),
-                Color.White, new Vector2(1.0f, 1.0f));
-        }
-
-        public void Draw(GraphicsDevice device)
-        {
-            effect.World = Camera.World;
-            effect.View = Camera.View;
-            effect.CurrentTechnique.Passes[0].Apply();
-            device.DrawUserPrimitives<VertexPositionColorTexture>(
-                PrimitiveType.TriangleStrip,
-                vertices,
-                0,
-                2);
-        }
-
-     
     }
+    
 }

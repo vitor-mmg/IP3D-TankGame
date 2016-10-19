@@ -59,14 +59,12 @@ namespace PrimeiraEntrega
             rasterizerState.MultiSampleAntiAlias = true;
             graphics.RasterizerState = rasterizerState;
 
-            //Coloca o rato no centro do ecrã
             Mouse.SetPosition(graphics.Viewport.Width / 2, graphics.Viewport.Height / 2);
 
             originalMouseState = Mouse.GetState();
         }
 
         
-        /// Calcula e atualiza a ViewMatrix para cada frame, consoante a posição e rotação da camâra
     
         static private void UpdateViewMatrix()
         {
@@ -136,8 +134,7 @@ namespace PrimeiraEntrega
             position += moveSpeed * rotatedVector;
             UpdateViewMatrix();
         }
-
-        
+     
         /// Atualiza os parâmetros da camâra
     
         static public void Update(GameTime gameTime, GraphicsDevice graphics)

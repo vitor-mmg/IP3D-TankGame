@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace PrimeiraEntrega
 {
@@ -9,11 +10,21 @@ namespace PrimeiraEntrega
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Terrreno plano;
+        BasicEffect efeitoTerrain;
+        Texture2D heightmap, terrainTexture;
+        bool desenharTerreno;
+        Random random;
+
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+
+            graphics.IsFullScreen = true;
+            graphics.ApplyChanges();
+
+        
+            graphics.PreferMultiSampling = true;
             Content.RootDirectory = "Content";
         }
 
@@ -21,6 +32,9 @@ namespace PrimeiraEntrega
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            random = new Random();
+            desenharTerreno = true;
+            this.Window.Title = "1ºEntrega";
             Camera.Initialize(GraphicsDevice);
             base.Initialize();
         }
@@ -28,8 +42,17 @@ namespace PrimeiraEntrega
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
+            heightmap = Content.Load<Texture2D>("terreno");
+            terrainTexture = Content.Load<Texture2D>("textura");
+            efeitoTerrain = new BasicEffect(GraphicsDevice);
+            efeitoTerrain.Texture = terrainTexture;
+            //i am an idiot faltava isto....
+            efeitoTerrain.TextureEnabled = true;
+            Terreno.GenerateTerrain(GraphicsDevice, heightmap);
+
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            plano = new Terrreno(GraphicsDevice, Content);
+       
 
             // TODO: use this.Content to load your game content here
         }
@@ -54,9 +77,8 @@ namespace PrimeiraEntrega
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            plano.Draw(GraphicsDevice);
-
-            
+           
+           Terreno.Draw(GraphicsDevice, efeitoTerrain);
 
             base.Draw(gameTime);
         }
