@@ -36,7 +36,7 @@ namespace PrimeiraEntrega
 
             altura = heightmap.Height;
             vertexes = new VertexPositionNormalTexture[altura * altura];
-
+             //altera isto 
             //Gerar vértices
             int x = 0, z = 0;
             for (int j = 0; j < altura / 2; j++) //Criamos duas colunas de vértices de cada vez
@@ -74,7 +74,7 @@ namespace PrimeiraEntrega
                 indexes[2 * i] = (int)i;
                 indexes[2 * i + 1] = (int)(i + altura);
             }
-
+            /ate aki
             //Calcular normais
             CalcularNormais();
 
