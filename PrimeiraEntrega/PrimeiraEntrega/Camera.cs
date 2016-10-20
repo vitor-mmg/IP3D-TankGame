@@ -60,8 +60,6 @@ namespace PrimeiraEntrega
 
             originalMouseState = Mouse.GetState();
         }
-
-        
     
         static private void UpdateViewMatrix()
         {

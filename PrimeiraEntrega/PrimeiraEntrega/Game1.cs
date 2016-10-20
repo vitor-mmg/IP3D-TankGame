@@ -41,7 +41,8 @@ namespace PrimeiraEntrega
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             heightmap = Content.Load<Texture2D>("terreno");
-            terrainTexture = Content.Load<Texture2D>("textura");
+            terrainTexture = Content.Load<Texture2D>("texture");
+            //terrainTexture = Content.Load<Texture2D>("tommy"); // If you want dat spicy texture for the map!! Até se nota os contornos melhor lol...
             efeitoTerrain = new BasicEffect(GraphicsDevice);
             efeitoTerrain.Texture = terrainTexture;
             //i am an idiot faltava isto.... //Acontece xD
