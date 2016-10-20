@@ -14,8 +14,7 @@ namespace PrimeiraEntrega
         Texture2D heightmap, terrainTexture;
         bool desenharTerreno;
         Random random;
-
-
+        
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -27,8 +26,7 @@ namespace PrimeiraEntrega
             graphics.PreferMultiSampling = true;
             Content.RootDirectory = "Content";
         }
-
-
+        
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -46,14 +44,12 @@ namespace PrimeiraEntrega
             terrainTexture = Content.Load<Texture2D>("textura");
             efeitoTerrain = new BasicEffect(GraphicsDevice);
             efeitoTerrain.Texture = terrainTexture;
-            //i am an idiot faltava isto....
+            //i am an idiot faltava isto.... //Acontece xD
             efeitoTerrain.TextureEnabled = true;
             Terreno.GenerateTerrain(GraphicsDevice, heightmap);
-
-
+            
             spriteBatch = new SpriteBatch(GraphicsDevice);
        
-
             // TODO: use this.Content to load your game content here
         }
 
@@ -61,7 +57,6 @@ namespace PrimeiraEntrega
         {
             // TODO: Unload any non ContentManager content here
         }
-
     
         protected override void Update(GameTime gameTime)
         {
@@ -69,16 +64,14 @@ namespace PrimeiraEntrega
                 Exit();
             Camera.Update(gameTime, GraphicsDevice);
             
-
             base.Update(gameTime);
         }
-
-
+        
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
            
-           Terreno.Draw(GraphicsDevice, efeitoTerrain);
+            Terreno.Draw(GraphicsDevice, efeitoTerrain);
 
             base.Draw(gameTime);
         }

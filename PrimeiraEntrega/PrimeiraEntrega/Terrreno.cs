@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,7 +30,6 @@ namespace PrimeiraEntrega
 
         static public void GenerateTerrain(GraphicsDevice graphics, Texture2D heightmap)
         {
-
             //Gerar texels a partir do heightmap
             texels = new Color[heightmap.Width * heightmap.Width];
             heightmap.GetData<Color>(texels);
@@ -65,9 +63,7 @@ namespace PrimeiraEntrega
                         x++;
                         z = 0;
                     }
-
                 }
-
             }
 
             //Gerar índices
@@ -190,7 +186,6 @@ namespace PrimeiraEntrega
 
                 vertexes[z].Normal = -normal4;
             }
-
             //Criar Normais para a última coluna, sem contar com os cantos           
             for (int z = altura * 2 - 1; z < vertexes.Count() - altura; z = z + altura)
             {
@@ -226,7 +221,6 @@ namespace PrimeiraEntrega
 
                 vertexes[z].Normal = normal4;
             }
-
             //Criar normais para a primeira linha, sem contar com os cantos
             for (int x = 1; x < altura - 1; x++)
             {
@@ -263,7 +257,6 @@ namespace PrimeiraEntrega
                 vertexes[x].Normal = normal4;
 
             }
-
             //Criar normais para a última linha, sem contar com os cantos
             for (int x = vertexes.Count() - altura + 1; x < vertexes.Count() - 1; x++)
             {
@@ -299,9 +292,6 @@ namespace PrimeiraEntrega
 
                 vertexes[x].Normal = -normal4;
             }
-
-
-
             //Cria a normal do vértice superior esquerdo
             for (int i = 0; i < 1; i++)
             {
@@ -411,11 +401,8 @@ namespace PrimeiraEntrega
                 Vector3 normal2 = (normal + normal1) / 2;
 
                 vertexes[i].Normal = -normal2;
-
             }
         }
-
-        
 
         static public void Draw(GraphicsDevice graphics, BasicEffect efeito)
         {
@@ -423,13 +410,9 @@ namespace PrimeiraEntrega
             efeito.World = Matrix.Identity; 
             efeito.View = Camera.View;
             efeito.Projection = Camera.Projection;
-
-
+            
             graphics.SamplerStates[0] = sampler;
-
-           
-
-       
+            
             efeito.CurrentTechnique.Passes[0].Apply();
 
             //Desenhar o terreno, uma strip de cada vez
@@ -443,9 +426,6 @@ namespace PrimeiraEntrega
                     0,
                     altura * 2 - 2);
             }
-
         }
-
     }
-    
 }

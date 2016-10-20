@@ -14,10 +14,8 @@ namespace PrimeiraEntrega
     {
         //Matrizes World, View e Projection
         static public Matrix World, View, Projection;
-
         //Posição da camara
         static private Vector3 position;
-
         //Rotação horizontal
         static float leftrightRot = 0f;
         //Rotação vertical
@@ -35,7 +33,6 @@ namespace PrimeiraEntrega
         //Near e far plane
         static public float nearPlane = 0.1f;
         static public float farPlane = worldSize ;
-
         
         /// Inicializa os componentes da camara
 
@@ -123,7 +120,6 @@ namespace PrimeiraEntrega
                 moveVector += new Vector3(0, -1, 0);
             AddToCameraPosition(moveVector * amount);
         }
-
         
         /// Atualiza a posição da camâra
      
