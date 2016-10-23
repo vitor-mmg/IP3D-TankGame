@@ -88,7 +88,8 @@ namespace PrimeiraEntrega
         
         static float surfaceFollow()
         {
-            //A e B sao vertices superiores, C e D sao os vertices inferiores
+            //A e B - vertices superiores
+            //C e D - vertices inferiores 
             //A-----------B
             //C-----------D
             int xA, zA, xB, zB, xC, zC, xD, zD;
@@ -98,10 +99,8 @@ namespace PrimeiraEntrega
 
             xB = xA + 1;
             zB = zA;
-
             xC = xA;
             zC = zA + 1;
-
             xD = xB;
             zD = zC;
 
@@ -145,21 +144,20 @@ namespace PrimeiraEntrega
             //Controlos do teclado
             Vector3 moveVector = new Vector3(0, 0, 0);
             KeyboardState keyState = Keyboard.GetState();
-            if (keyState.IsKeyDown(Keys.W))
+            if (keyState.IsKeyDown(Keys.NumPad8))
                 moveVector += new Vector3(0, 0, -1);
-            if (keyState.IsKeyDown(Keys.S))
+            if (keyState.IsKeyDown(Keys.NumPad5))
                 moveVector += new Vector3(0, 0, 1);
-            if (keyState.IsKeyDown(Keys.D))
+            if (keyState.IsKeyDown(Keys.NumPad6))
                 moveVector += new Vector3(1, 0, 0);
-            if (keyState.IsKeyDown(Keys.A))
+            if (keyState.IsKeyDown(Keys.NumPad4))
                 moveVector += new Vector3(-1, 0, 0);
-            if (keyState.IsKeyDown(Keys.Q))
+            if (keyState.IsKeyDown(Keys.NumPad7))
                 moveVector += new Vector3(0, 1, 0);
-            if (keyState.IsKeyDown(Keys.E))
+            if (keyState.IsKeyDown(Keys.NumPad9))
                 moveVector += new Vector3(0, -1, 0);
             AddToCameraPosition(moveVector * amount);
         }
-        
         /// Atualiza a posição da camâra
      
         static private void AddToCameraPosition(Vector3 vectorToAdd)
@@ -170,8 +168,6 @@ namespace PrimeiraEntrega
             UpdateViewMatrix();
             position.Y = surfaceFollow(); // Linha que define camara como surface follow, se nao tiver aqui a camara e igual a uma livre.
         }
-
-     
         /// Atualiza os parâmetros da camâra
     
         static public void Update(GameTime gameTime, GraphicsDevice graphics)
