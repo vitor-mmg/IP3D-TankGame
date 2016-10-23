@@ -74,7 +74,7 @@ namespace PrimeiraEntrega
                 indexes[2 * i] = (int)i;
                 indexes[2 * i + 1] = (int)(i + altura);
             }
-            /ate aki
+            //ate aki
             //Calcular normais
             CalcularNormais();
 
@@ -402,6 +402,11 @@ namespace PrimeiraEntrega
 
                 vertexes[i].Normal = -normal2;
             }
+        }
+
+        static public VertexPositionNormalTexture[] getVertexes()
+        {
+            return (vertexes);
         }
 
         static public void Draw(GraphicsDevice graphics, BasicEffect efeito)
