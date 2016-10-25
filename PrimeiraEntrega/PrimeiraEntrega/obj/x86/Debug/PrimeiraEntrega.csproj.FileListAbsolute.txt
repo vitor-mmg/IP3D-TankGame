@@ -7,15 +7,6 @@ c:\users\vitor\documents\visual studio 2013\Projects\PrimeiraEntrega\PrimeiraEnt
 c:\users\vitor\documents\visual studio 2013\Projects\PrimeiraEntrega\PrimeiraEntrega\obj\x86\Debug\PrimeiraEntrega.pdb
 c:\users\vitor\documents\visual studio 2013\Projects\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\pepe.png
 c:\users\vitor\documents\visual studio 2013\Projects\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\terreno.jpg
-C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\obj\x86\Debug\PrimeiraEntrega.exe
-C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\obj\x86\Debug\PrimeiraEntrega.pdb
-C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\terreno.jpg
-C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\PrimeiraEntrega.exe
-C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\PrimeiraEntrega.pdb
-C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\MonoGame.Framework.dll
-C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\OpenTK.dll
-C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\obj\x86\Debug\PrimeiraEntrega.csprojResolveAssemblyReference.cache
-C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\textura.jpg
 C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\terreno.jpg
 C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\textura.jpg
 C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\PrimeiraEntrega.exe
@@ -26,3 +17,12 @@ C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntreg
 C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\obj\x86\Debug\PrimeiraEntrega.exe
 C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\obj\x86\Debug\PrimeiraEntrega.pdb
 C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\Tommy.jpg
+C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\terreno.jpg
+C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\textura.jpg
+C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\tommy.jpg
+C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\PrimeiraEntrega.exe
+C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\PrimeiraEntrega.pdb
+C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\MonoGame.Framework.dll
+C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\OpenTK.dll
+C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\obj\x86\Debug\PrimeiraEntrega.exe
+C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\obj\x86\Debug\PrimeiraEntrega.pdb

@@ -10,7 +10,7 @@ namespace PrimeiraEntrega
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        BasicEffect efeitoTerrain;
+        BasicEffect efeitoTerreno;
         Texture2D heightmap, terrainTexture;
         bool desenharTerreno;
         Random random;
@@ -42,10 +42,28 @@ namespace PrimeiraEntrega
             heightmap = Content.Load<Texture2D>("terreno");
             terrainTexture = Content.Load<Texture2D>("textura");
             //terrainTexture = Content.Load<Texture2D>("tommy"); // If you want dat spicy texture for the map!! Até se nota os contornos melhor lol...
-            efeitoTerrain = new BasicEffect(GraphicsDevice);
-            efeitoTerrain.Texture = terrainTexture;
+           
+            
+            efeitoTerreno = new BasicEffect(GraphicsDevice);
+            efeitoTerreno.Texture = terrainTexture;
+            efeitoTerreno.LightingEnabled = true;
+            efeitoTerreno.DirectionalLight0.Enabled = true;
+            efeitoTerreno.DirectionalLight0.Direction = new Vector3(1, -1, 1);
+            efeitoTerreno.DirectionalLight0.SpecularColor = new Vector3(0.5f, 0.5f, 0.5f);
+            efeitoTerreno.SpecularPower = 1000f;
+            efeitoTerreno.AmbientLightColor = new Vector3(0.4f, 0.4f, 0.4f);
+           
+            efeitoTerreno.SpecularColor = new Vector3(1, 1, 1);
+            efeitoTerreno.DirectionalLight1.Enabled = false;
+            efeitoTerreno.DirectionalLight2.Enabled = true;
+
+            efeitoTerreno.FogEnabled = true;
+            efeitoTerreno.FogColor = Color.Gray.ToVector3(); // For best results, ake this color whatever your background is.
+            efeitoTerreno.FogStart = 15;
+            efeitoTerreno.FogEnd = 50.0f;     
+       
             //i am an idiot faltava isto.... //Acontece xD
-            efeitoTerrain.TextureEnabled = true;
+            efeitoTerreno.TextureEnabled = true;
             Terreno.GenerateTerrain(GraphicsDevice, heightmap);
 
             VertexPositionNormalTexture[] vertices = Terreno.getVertexes();
@@ -74,7 +92,7 @@ namespace PrimeiraEntrega
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
            
-            Terreno.Draw(GraphicsDevice, efeitoTerrain);
+            Terreno.Draw(GraphicsDevice, efeitoTerreno);
 
             base.Draw(gameTime);
         }

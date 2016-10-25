@@ -19,11 +19,13 @@ namespace PrimeiraEntrega
         //Array de texels
         static Color[] texels;
 
+
         //Buffers
         static private VertexBuffer vertexBuffer;
         static private IndexBuffer indexBuffer;
 
         static SamplerState sampler;
+
 
         //Dimensões do terreno
         static public int altura;
@@ -74,7 +76,6 @@ namespace PrimeiraEntrega
                 indexes[2 * i] = (int)i;
                 indexes[2 * i + 1] = (int)(i + altura);
             }
-            //ate aki
             //Calcular normais
             CalcularNormais();
 
@@ -96,311 +97,237 @@ namespace PrimeiraEntrega
             sampler.Filter = TextureFilter.Anisotropic;
             sampler.MaxAnisotropy = 4;
         }
-
-        static private void CalcularNormais()
+       static private void CalcularNormais()
         {
-            //Cria as normais do interior do terreno
-            for (int i = altura + 1; i < vertexes.Count() - altura - 1; i++)
+            for (int x = 0; x <= altura - 1; x++)
             {
-                Vector3 v1 = Vector3.Zero;
-                Vector3 v2 = Vector3.Zero;
-                Vector3 v3 = Vector3.Zero;
-                Vector3 v4 = Vector3.Zero;
-                Vector3 v5 = Vector3.Zero;
-                Vector3 v6 = Vector3.Zero;
-                Vector3 v7 = Vector3.Zero;
-                Vector3 v8 = Vector3.Zero;
-                Vector3 v9 = Vector3.Zero;
+                for (int z = 0; z <= altura - 1; z++)
+                {
+                    VertexPositionNormalTexture vertice = vertexes[x * altura + z];
 
-                v1 = vertexes[i].Position;
-                v2 = vertexes[i + 1].Position;
-                v3 = vertexes[i + 1 - altura].Position;
-                v4 = vertexes[i - altura].Position;
-                v5 = vertexes[i - 1 - altura].Position;
-                v6 = vertexes[i - 1].Position;
-                v7 = vertexes[i - 1 + altura].Position;
-                v8 = vertexes[i + altura].Position;
-                v9 = vertexes[i + 1 + altura].Position;
+                    // centro
+                    if (x > 0 && x < altura - 1 && z > 0 && z < altura - 1)
+                    {
 
-                Vector3 vt1 = v2 - v1;
-                Vector3 vt2 = v3 - v1;
-                Vector3 vt3 = v4 - v1;
-                Vector3 vt4 = v5 - v1;
-                Vector3 vt5 = v6 - v1;
-                Vector3 vt6 = v7 - v1;
-                Vector3 vt7 = v8 - v1;
-                Vector3 vt8 = v9 - v1;
-
-                Vector3 normal = Vector3.Cross(vt2, vt1);
-                normal.Normalize();
-                Vector3 normal1 = Vector3.Cross(vt3, vt2);
-                normal1.Normalize();
-                Vector3 normal2 = Vector3.Cross(vt4, vt3);
-                normal2.Normalize();
-                Vector3 normal3 = Vector3.Cross(vt5, vt4);
-                normal3.Normalize();
-                Vector3 normal4 = Vector3.Cross(vt6, vt5);
-                normal4.Normalize();
-                Vector3 normal5 = Vector3.Cross(vt7, vt6);
-                normal5.Normalize();
-                Vector3 normal6 = Vector3.Cross(vt8, vt7);
-                normal6.Normalize();
-                Vector3 normal7 = Vector3.Cross(vt1, vt8);
-                normal7.Normalize();
-
-                Vector3 normal8 = (normal + normal1 + normal2 + normal3 + normal4 + normal5 + normal6 + normal7) / 8;
-                vertexes[i].Normal = normal8;
-            }
-            //Criar Normais para a primeira coluna, sem contar com os cantos           
-            for (int z = altura; z < vertexes.Count() - altura; z = z + altura)
-            {
-                Vector3 v1 = Vector3.Zero;
-                Vector3 v2 = Vector3.Zero;
-                Vector3 v3 = Vector3.Zero;
-                Vector3 v4 = Vector3.Zero;
-                Vector3 v5 = Vector3.Zero;
-                Vector3 v6 = Vector3.Zero;
-
-                v1 = vertexes[z].Position;
-                v2 = vertexes[z - altura].Position;
-                v3 = vertexes[z + altura].Position;
-                v4 = vertexes[z + 1].Position;
-                v5 = vertexes[z - altura + 1].Position;
-                v6 = vertexes[z + altura + 1].Position;
-
-                Vector3 vt1 = v2 - v1;
-                Vector3 vt2 = v5 - v1;
-                Vector3 vt3 = v4 - v1;
-                Vector3 vt4 = v6 - v1;
-                Vector3 vt5 = v3 - v1;
-
-                Vector3 normal = Vector3.Cross(vt2, vt1);
-                normal.Normalize();
-                Vector3 normal1 = Vector3.Cross(vt3, vt2);
-                normal1.Normalize();
-                Vector3 normal2 = Vector3.Cross(vt4, vt3);
-                normal2.Normalize();
-                Vector3 normal3 = Vector3.Cross(vt5, vt4);
-                normal3.Normalize();
-                Vector3 normal4 = (normal + normal1 + normal2 + normal3) / 4;
-
-                vertexes[z].Normal = -normal4;
-            }
-            //Criar Normais para a última coluna, sem contar com os cantos           
-            for (int z = altura * 2 - 1; z < vertexes.Count() - altura; z = z + altura)
-            {
-                Vector3 v1 = Vector3.Zero;
-                Vector3 v2 = Vector3.Zero;
-                Vector3 v3 = Vector3.Zero;
-                Vector3 v4 = Vector3.Zero;
-                Vector3 v5 = Vector3.Zero;
-                Vector3 v6 = Vector3.Zero;
-
-                v1 = vertexes[z].Position;
-                v2 = vertexes[z - altura].Position;
-                v3 = vertexes[z + altura].Position;
-                v4 = vertexes[z - 1].Position;
-                v5 = vertexes[z - altura - 1].Position;
-                v6 = vertexes[z + altura - 1].Position;
-
-                Vector3 vt1 = v2 - v1;
-                Vector3 vt2 = v5 - v1;
-                Vector3 vt3 = v4 - v1;
-                Vector3 vt4 = v6 - v1;
-                Vector3 vt5 = v3 - v1;
-
-                Vector3 normal = Vector3.Cross(vt2, vt1);
-                normal.Normalize();
-                Vector3 normal1 = Vector3.Cross(vt3, vt2);
-                normal1.Normalize();
-                Vector3 normal2 = Vector3.Cross(vt4, vt3);
-                normal2.Normalize();
-                Vector3 normal3 = Vector3.Cross(vt5, vt4);
-                normal3.Normalize();
-                Vector3 normal4 = (normal + normal1 + normal2 + normal3) / 4;
-
-                vertexes[z].Normal = normal4;
-            }
-            //Criar normais para a primeira linha, sem contar com os cantos
-            for (int x = 1; x < altura - 1; x++)
-            {
-                Vector3 v1 = Vector3.Zero;
-                Vector3 v2 = Vector3.Zero;
-                Vector3 v3 = Vector3.Zero;
-                Vector3 v4 = Vector3.Zero;
-                Vector3 v5 = Vector3.Zero;
-                Vector3 v6 = Vector3.Zero;
-
-                v1 = vertexes[x].Position;
-                v2 = vertexes[x - 1].Position;
-                v3 = vertexes[x + 1].Position;
-                v4 = vertexes[x + altura].Position;
-                v5 = vertexes[x - 1 + altura].Position;
-                v6 = vertexes[x + altura + 1].Position;
-
-                Vector3 vt1 = v2 - v1;
-                Vector3 vt2 = v5 - v1;
-                Vector3 vt3 = v4 - v1;
-                Vector3 vt4 = v6 - v1;
-                Vector3 vt5 = v3 - v1;
-
-                Vector3 normal = Vector3.Cross(vt2, vt1);
-                normal.Normalize();
-                Vector3 normal1 = Vector3.Cross(vt3, vt2);
-                normal1.Normalize();
-                Vector3 normal2 = Vector3.Cross(vt4, vt3);
-                normal2.Normalize();
-                Vector3 normal3 = Vector3.Cross(vt5, vt4);
-                normal3.Normalize();
-                Vector3 normal4 = (normal + normal1 + normal2 + normal3) / 4;
-
-                vertexes[x].Normal = normal4;
-
-            }
-            //Criar normais para a última linha, sem contar com os cantos
-            for (int x = vertexes.Count() - altura + 1; x < vertexes.Count() - 1; x++)
-            {
-                Vector3 v1 = Vector3.Zero;
-                Vector3 v2 = Vector3.Zero;
-                Vector3 v3 = Vector3.Zero;
-                Vector3 v4 = Vector3.Zero;
-                Vector3 v5 = Vector3.Zero;
-                Vector3 v6 = Vector3.Zero;
-
-                v1 = vertexes[x].Position;
-                v2 = vertexes[x - 1].Position;
-                v3 = vertexes[x + 1].Position;
-                v4 = vertexes[x - altura].Position;
-                v5 = vertexes[x - 1 - altura].Position;
-                v6 = vertexes[x - altura + 1].Position;
-
-                Vector3 vt1 = v2 - v1;
-                Vector3 vt2 = v5 - v1;
-                Vector3 vt3 = v4 - v1;
-                Vector3 vt4 = v6 - v1;
-                Vector3 vt5 = v3 - v1;
-
-                Vector3 normal = Vector3.Cross(vt2, vt1);
-                normal.Normalize();
-                Vector3 normal1 = Vector3.Cross(vt3, vt2);
-                normal1.Normalize();
-                Vector3 normal2 = Vector3.Cross(vt4, vt3);
-                normal2.Normalize();
-                Vector3 normal3 = Vector3.Cross(vt5, vt4);
-                normal3.Normalize();
-                Vector3 normal4 = (normal + normal1 + normal2 + normal3) / 4;
-
-                vertexes[x].Normal = -normal4;
-            }
-            //Cria a normal do vértice superior esquerdo
-            for (int i = 0; i < 1; i++)
-            {
-                Vector3 v1 = Vector3.Zero;
-                Vector3 v2 = Vector3.Zero;
-                Vector3 v3 = Vector3.Zero;
-                Vector3 v4 = Vector3.Zero;
-
-                v1 = vertexes[i].Position;
-                v2 = vertexes[i + 1].Position;
-                v3 = vertexes[i + 1 + altura].Position;
-                v4 = vertexes[i + altura].Position;
+                        //com 8 cross's
+                        VertexPositionNormalTexture verticeCima = vertexes[(x * altura + z) - 1];
+                        VertexPositionNormalTexture verticeCimaDireita = vertexes[(x * altura + z) + altura - 1];
+                        VertexPositionNormalTexture verticeDireita = vertexes[(x * altura + z) + altura];
+                        VertexPositionNormalTexture verticeBaixoDireita = vertexes[(x * altura + z) + altura + 1];
+                        VertexPositionNormalTexture verticeBaixo = vertexes[(x * altura + z) + 1];
+                        VertexPositionNormalTexture verticeBaixoEsquerda = vertexes[(x * altura + z) + 1 - altura];
+                        VertexPositionNormalTexture verticeEsquerda = vertexes[(x * altura + z) - altura];
+                        VertexPositionNormalTexture verticeCimaEsquerda = vertexes[(x * altura + z) - altura - 1];
 
 
-                Vector3 vt1 = v2 - v1;
-                Vector3 vt2 = v3 - v1;
-                Vector3 vt3 = v4 - v1;
+                        Vector3 vectorCima = verticeCima.Position - vertice.Position;
+                        Vector3 vectorEsquerda = verticeEsquerda.Position - vertice.Position;
+                        Vector3 vectorBaixo = verticeBaixo.Position - vertice.Position;
+                        Vector3 vectorDireita = verticeDireita.Position - vertice.Position;
 
-                Vector3 normal = Vector3.Cross(vt2, vt1);
-                normal.Normalize();
-                Vector3 normal1 = Vector3.Cross(vt3, vt2);
-                normal1.Normalize();
-                Vector3 normal2 = (normal + normal1) / 2;
+                        Vector3 vectorCimaDireita = verticeCimaDireita.Position - vertice.Position;
+                        Vector3 vectorCimaEsquerda = verticeCimaEsquerda.Position - vertice.Position;
+                        Vector3 vectorBaixoDireita = verticeBaixoDireita.Position - vertice.Position;
+                        Vector3 vectorBaixoEsquerda = verticeBaixoEsquerda.Position - vertice.Position;
 
-                vertexes[i].Normal = -normal2;
-
-            }
-
-            //Cria a normal do vértice superior direito
-            for (int i = altura - 1; i < altura; i++)
-            {
-                Vector3 v1 = Vector3.Zero;
-                Vector3 v2 = Vector3.Zero;
-                Vector3 v3 = Vector3.Zero;
-                Vector3 v4 = Vector3.Zero;
-
-                v1 = vertexes[i].Position;
-                v2 = vertexes[i - 1].Position;
-                v3 = vertexes[i - 1 + altura].Position;
-                v4 = vertexes[i + altura].Position;
+                        Vector3 normal1 = Vector3.Cross(vectorCima, vectorCimaEsquerda);
+                        Vector3 normal2 = Vector3.Cross(vectorCimaEsquerda, vectorEsquerda);
+                        Vector3 normal3 = Vector3.Cross(vectorEsquerda, vectorBaixoEsquerda);
+                        Vector3 normal4 = Vector3.Cross(vectorBaixoEsquerda, vectorBaixo);
+                        Vector3 normal5 = Vector3.Cross(vectorBaixo, vectorBaixoDireita);
+                        Vector3 normal6 = Vector3.Cross(vectorBaixoDireita, vectorDireita);
+                        Vector3 normal7 = Vector3.Cross(vectorDireita, vectorCimaDireita);
+                        Vector3 normal8 = Vector3.Cross(vectorCimaDireita, vectorCima);
 
 
-                Vector3 vt1 = v2 - v1;
-                Vector3 vt2 = v3 - v1;
-                Vector3 vt3 = v4 - v1;
+                        Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2) + Vector3.Normalize(normal3) + Vector3.Normalize(normal4) +
+                            Vector3.Normalize(normal5) + Vector3.Normalize(normal6) + Vector3.Normalize(normal7) + Vector3.Normalize(normal8)) / 8;
 
-                Vector3 normal = Vector3.Cross(vt2, vt1);
-                normal.Normalize();
-                Vector3 normal1 = Vector3.Cross(vt3, vt2);
-                normal1.Normalize();
-                Vector3 normal2 = (normal + normal1) / 2;
+                        vertexes[x * altura + z].Normal = Normal;
+                    }
 
-                vertexes[i].Normal = normal2;
+                    // lado esquerdo
+                    if (x == 0 && z != 0 && z != altura - 1)
+                    {
+                        VertexPositionNormalTexture verticeDireita = vertexes[(x * altura + z) + altura];
+                        VertexPositionNormalTexture verticeCima = vertexes[(x * altura + z) - 1];
+                        VertexPositionNormalTexture verticeBaixo = vertexes[(x * altura + z) + 1];
+                        VertexPositionNormalTexture verticeCimaDireita = vertexes[(x * altura + z) + altura - 1];
+                        VertexPositionNormalTexture verticeBaixoDireita = vertexes[(x * altura + z) + altura + 1];
 
-            }
-
-            //Cria a normal do vértice inferior esquerdo
-            for (int i = vertexes.Count() - altura; i < vertexes.Count() - altura + 1; i++)
-            {
-                Vector3 v1 = Vector3.Zero;
-                Vector3 v2 = Vector3.Zero;
-                Vector3 v3 = Vector3.Zero;
-                Vector3 v4 = Vector3.Zero;
-
-                v1 = vertexes[i].Position;
-                v2 = vertexes[i + 1].Position;
-                v3 = vertexes[i + 1 - altura].Position;
-                v4 = vertexes[i - altura].Position;
+                        Vector3 vectorBaixo = verticeBaixo.Position - vertice.Position;
+                        Vector3 vectorDireita = verticeDireita.Position - vertice.Position;
+                        Vector3 vectorCima = verticeCima.Position - vertice.Position;
+                        Vector3 vectorCimaDireita = verticeCimaDireita.Position - vertice.Position;
+                        Vector3 vectorBaixoDireita = verticeBaixoDireita.Position - vertice.Position;
 
 
-                Vector3 vt1 = v2 - v1;
-                Vector3 vt2 = v3 - v1;
-                Vector3 vt3 = v4 - v1;
 
-                Vector3 normal = Vector3.Cross(vt2, vt1);
-                normal.Normalize();
-                Vector3 normal1 = Vector3.Cross(vt3, vt2);
-                normal1.Normalize();
-                Vector3 normal2 = (normal + normal1) / 2;
-
-                vertexes[i].Normal = normal2;
-
-            }
-
-            //Cria a normal do vértice inferior direito
-            for (int i = vertexes.Count() - 1; i < vertexes.Count(); i++)
-            {
-                Vector3 v1 = Vector3.Zero;
-                Vector3 v2 = Vector3.Zero;
-                Vector3 v3 = Vector3.Zero;
-                Vector3 v4 = Vector3.Zero;
-
-                v1 = vertexes[i].Position;
-                v2 = vertexes[i - 1].Position;
-                v3 = vertexes[i - 1 - altura].Position;
-                v4 = vertexes[i - altura].Position;
+                        Vector3 normal1 = Vector3.Cross(vectorBaixo, vectorBaixoDireita);
+                        Vector3 normal2 = Vector3.Cross(vectorBaixoDireita, vectorDireita);
+                        Vector3 normal3 = Vector3.Cross(vectorDireita, vectorCimaDireita);
+                        Vector3 normal4 = Vector3.Cross(vectorCimaDireita, vectorCima);
 
 
-                Vector3 vt1 = v2 - v1;
-                Vector3 vt2 = v3 - v1;
-                Vector3 vt3 = v4 - v1;
+                        Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2) + Vector3.Normalize(normal3) + Vector3.Normalize(normal4)) / 4;
 
-                Vector3 normal = Vector3.Cross(vt2, vt1);
-                normal.Normalize();
-                Vector3 normal1 = Vector3.Cross(vt3, vt2);
-                normal1.Normalize();
-                Vector3 normal2 = (normal + normal1) / 2;
+                        vertexes[x * altura + z].Normal = Normal;
 
-                vertexes[i].Normal = -normal2;
+
+
+                    }
+                    // lado direito
+                    if (x == altura - 1 && z != 0 && z != altura - 1)
+                    {
+                        VertexPositionNormalTexture verticeEsquerda = vertexes[(x * altura + z) - altura];
+                        VertexPositionNormalTexture verticeCima = vertexes[(x * altura + z) - 1];
+                        VertexPositionNormalTexture verticeBaixo = vertexes[(x * altura + z) + 1];
+                        VertexPositionNormalTexture verticeBaixoEsquerda = vertexes[(x * altura + z) + 1 - altura];
+                        VertexPositionNormalTexture verticeCimaEsquerda = vertexes[(x * altura + z) - altura - 1];
+
+                        Vector3 vectorBaixo = verticeBaixo.Position - vertice.Position;
+                        Vector3 vectorEsquerda = verticeEsquerda.Position - vertice.Position;
+                        Vector3 vectorCima = verticeCima.Position - vertice.Position;
+                        Vector3 vectorBaixoEsquerda = verticeBaixoEsquerda.Position - vertice.Position;
+                        Vector3 vectorCimaEsquerda = verticeCimaEsquerda.Position - vertice.Position;
+
+
+
+                        Vector3 normal1 = Vector3.Cross(vectorCima, vectorCimaEsquerda);
+                        Vector3 normal2 = Vector3.Cross(vectorCimaEsquerda, vectorEsquerda);
+                        Vector3 normal3 = Vector3.Cross(vectorEsquerda, vectorBaixoEsquerda);
+                        Vector3 normal4 = Vector3.Cross(vectorBaixoEsquerda, vectorBaixo);
+
+                        Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2) + Vector3.Normalize(normal3) + Vector3.Normalize(normal4)) / 4;
+
+                        vertexes[x * altura + z].Normal = Normal;
+
+
+
+                    }
+                    // lado superior
+                    if (x != 0 && z == 0 && x != altura - 1)
+                    {
+                        VertexPositionNormalTexture verticeDireita = vertexes[(x * altura + z) + altura];
+                        VertexPositionNormalTexture verticeEsquerda = vertexes[(x * altura + z) - altura];
+                        VertexPositionNormalTexture verticeBaixo = vertexes[(x * altura + z) + 1];
+                        VertexPositionNormalTexture verticeBaixoEsquerda = vertexes[(x * altura + z) + 1 - altura];
+                        VertexPositionNormalTexture verticeBaixoDireita = vertexes[(x * altura + z) + altura + 1];
+
+                        Vector3 vectorBaixo = verticeBaixo.Position - vertice.Position;
+                        Vector3 vectorEsquerda = verticeEsquerda.Position - vertice.Position;
+                        Vector3 vectorDireita = verticeDireita.Position - vertice.Position;
+                        Vector3 vectorBaixoEsquerda = verticeBaixoEsquerda.Position - vertice.Position;
+                        Vector3 vectorBaixoDireita = verticeBaixoDireita.Position - vertice.Position;
+
+
+                        Vector3 normal1 = Vector3.Cross(vectorEsquerda, vectorBaixoEsquerda);
+                        Vector3 normal2 = Vector3.Cross(vectorBaixoEsquerda, vectorBaixo);
+                        Vector3 normal3 = Vector3.Cross(vectorBaixo, vectorBaixoDireita);
+                        Vector3 normal4 = Vector3.Cross(vectorBaixoDireita, vectorDireita);
+
+                        Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2) + Vector3.Normalize(normal3) + Vector3.Normalize(normal4)) / 4;
+
+                        vertexes[x * altura + z].Normal = Normal;
+
+
+
+                    }
+
+                    // lado inferior
+                    if (x != 0 && z == altura - 1 && x != altura - 1)
+                    {
+                        VertexPositionNormalTexture verticeDireita = vertexes[(x * altura + z) + altura];
+                        VertexPositionNormalTexture verticeEsquerda = vertexes[(x * altura + z) - altura];
+                        VertexPositionNormalTexture verticeCima = vertexes[(x * altura + z) - 1];
+                        VertexPositionNormalTexture verticeCimaEsquerda = vertexes[(x * altura + z) - altura - 1];
+                        VertexPositionNormalTexture verticeCimaDireita = vertexes[(x * altura + z) + altura - 1];
+
+                        Vector3 vectorCima = verticeCima.Position - vertice.Position;
+                        Vector3 vectorEsquerda = verticeEsquerda.Position - vertice.Position;
+                        Vector3 vectorDireita = verticeDireita.Position - vertice.Position;
+                        Vector3 vectorCimaEsquerda = verticeCimaEsquerda.Position - vertice.Position;
+                        Vector3 vectorCimaDireita = verticeCimaDireita.Position - vertice.Position;
+
+
+                        Vector3 normal1 = Vector3.Cross(vectorDireita, vectorCimaDireita);
+                        Vector3 normal2 = Vector3.Cross(vectorCimaDireita, vectorCima);
+                        Vector3 normal3 = Vector3.Cross(vectorCima, vectorCimaEsquerda);
+                        Vector3 normal4 = Vector3.Cross(vectorCimaEsquerda, vectorEsquerda);
+
+                        Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2) + Vector3.Normalize(normal3) + Vector3.Normalize(normal4)) / 4;
+
+                        vertexes[x * altura + z].Normal = Normal;
+
+
+                    }
+                    if (x == 0 && z == 0)
+                    {
+                        VertexPositionNormalTexture verticeDireita = vertexes[(x * altura + z) + altura];
+                        VertexPositionNormalTexture verticeBaixo = vertexes[(x * altura + z) + 1];
+                        VertexPositionNormalTexture verticeBaixoDireita = vertexes[(x * altura + z) + altura + 1];
+
+                        Vector3 vectorDireita = verticeDireita.Position - vertice.Position;
+                        Vector3 vectorBaixo = verticeBaixo.Position - vertice.Position;
+                        Vector3 vectorBaixoDireita = verticeBaixoDireita.Position - vertice.Position;
+
+                        Vector3 normal1 = Vector3.Cross(vectorBaixo, vectorBaixoDireita);
+                        Vector3 normal2 = Vector3.Cross(vectorBaixoDireita, vectorDireita);
+                        Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2)) / 2;
+                        vertexes[x * altura + z].Normal = Normal;
+
+                    }
+                    if (x == 0 && z == altura - 1)
+                    {
+                        VertexPositionNormalTexture verticeCima = vertexes[(x * altura + z) - 1];
+                        VertexPositionNormalTexture verticeDireita = vertexes[(x * altura + z) + altura];
+                        VertexPositionNormalTexture verticeCimaDireita = vertexes[(x * altura + z) + altura - 1];
+
+                        Vector3 vectorDireita = verticeDireita.Position - vertice.Position;
+                        Vector3 vectorCima = verticeCima.Position - vertice.Position;
+                        Vector3 vectorCimaDireita = verticeCimaDireita.Position - vertice.Position;
+
+                        Vector3 normal1 = Vector3.Cross(vectorDireita, vectorCimaDireita);
+                        Vector3 normal2 = Vector3.Cross(vectorCimaDireita, vectorCima);
+                        Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2)) / 2;
+                        vertexes[x * altura + z].Normal = Normal;
+
+                    }
+
+                    if (x == altura - 1 && z == 0)
+                    {
+                        VertexPositionNormalTexture verticeBaixo = vertexes[(x * altura + z) + 1];
+                        VertexPositionNormalTexture verticeEsquerda = vertexes[(x * altura + z) - altura];
+                        VertexPositionNormalTexture verticeBaixoEsquerda = vertexes[(x * altura + z) + 1 - altura];
+
+                        Vector3 vectorEsquerda = verticeEsquerda.Position - vertice.Position;
+                        Vector3 vectorBaixo = verticeBaixo.Position - vertice.Position;
+                        Vector3 vectorBaixoEsquerda = verticeBaixoEsquerda.Position - vertice.Position;
+
+                        Vector3 normal1 = Vector3.Cross(vectorEsquerda, vectorBaixoEsquerda);
+                        Vector3 normal2 = Vector3.Cross(vectorBaixoEsquerda, vectorBaixo);
+                        Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2)) / 2;
+                        vertexes[x * altura + z].Normal = Normal;
+                    }
+
+                    if (x == altura - 1 && z == altura - 1)
+                    {
+                        VertexPositionNormalTexture verticeCima = vertexes[(x * altura + z) - 1];
+                        VertexPositionNormalTexture verticeEsquerda = vertexes[(x * altura + z) - altura];
+                        VertexPositionNormalTexture verticeCimaEsquerda = vertexes[(x * altura + z) - altura - 1];
+
+                        Vector3 vectorEsquerda = verticeEsquerda.Position - vertice.Position;
+                        Vector3 vectorCima = verticeCima.Position - vertice.Position;
+                        Vector3 vectorCimaEsquerda = verticeCimaEsquerda.Position - vertice.Position;
+
+                        Vector3 normal1 = Vector3.Cross(vectorCima, vectorCimaEsquerda);
+                        Vector3 normal2 = Vector3.Cross(vectorCimaEsquerda, vectorEsquerda);
+                        Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2)) / 2;
+                        vertexes[x * altura + z].Normal = Normal;
+                    }
+
+
+                }
             }
         }
 
