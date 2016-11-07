@@ -14,7 +14,9 @@ namespace PrimeiraEntrega
         Texture2D heightmap, terrainTexture;
         bool desenharTerreno;
         Random random;
-        
+        Tanque tank;
+        float time = 0.5f;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -42,10 +44,13 @@ namespace PrimeiraEntrega
             heightmap = Content.Load<Texture2D>("terreno");
             terrainTexture = Content.Load<Texture2D>("textura");
             //terrainTexture = Content.Load<Texture2D>("tommy"); // If you want dat spicy texture for the map!! Até se nota os contornos melhor lol...
-           
+            tank = new Tanque(GraphicsDevice, Content);
+
             
             efeitoTerreno = new BasicEffect(GraphicsDevice);
             efeitoTerreno.Texture = terrainTexture;
+            //luzes
+
             efeitoTerreno.LightingEnabled = true;
             efeitoTerreno.DirectionalLight0.Enabled = true;
             efeitoTerreno.DirectionalLight0.Direction = new Vector3(1, -1, 1);
@@ -84,7 +89,7 @@ namespace PrimeiraEntrega
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             Camera.Update(gameTime, GraphicsDevice);
-            
+            tank.Update(time, gameTime);
             base.Update(gameTime);
         }
         
@@ -93,6 +98,7 @@ namespace PrimeiraEntrega
             GraphicsDevice.Clear(Color.CornflowerBlue);
            
             Terreno.Draw(GraphicsDevice, efeitoTerreno);
+            tank.Draw(efeitoTerreno);
 
             base.Draw(gameTime);
         }
