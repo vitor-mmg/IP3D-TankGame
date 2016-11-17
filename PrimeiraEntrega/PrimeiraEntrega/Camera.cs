@@ -23,7 +23,7 @@ namespace PrimeiraEntrega
         //Velocidade da rotação
         const float rotationSpeed = 0.3f;
         //Velocidade do movimento com o rato
-        const float moveSpeed = 5f;
+        const float moveSpeed = 10f;
         //Estado do rato
         static private MouseState originalMouseState;
         //BoundingFrustum da camâra
@@ -166,7 +166,7 @@ namespace PrimeiraEntrega
             Vector3 rotatedVector = Vector3.Transform(vectorToAdd, cameraRotation);
             position += moveSpeed * rotatedVector;
             UpdateViewMatrix();
-            position.Y = surfaceFollow(); // Linha que define camara como surface follow, se nao tiver aqui a camara e igual a uma livre.
+            //position.Y = surfaceFollow(); // Linha que define camara como surface follow, se nao tiver aqui a camara e igual a uma livre.
         }
         /// Atualiza os parâmetros da camâra
     

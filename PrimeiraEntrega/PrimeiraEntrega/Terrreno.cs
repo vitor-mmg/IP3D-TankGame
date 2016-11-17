@@ -14,7 +14,7 @@ namespace PrimeiraEntrega
         static public VertexPositionNormalTexture[] vertexes;
 
         //Array de índices
-        static private int[] indexes;
+        static private short[] indice;
 
         //Array de texels
         static Color[] texels;
@@ -25,7 +25,6 @@ namespace PrimeiraEntrega
         static private IndexBuffer indexBuffer;
 
         static SamplerState sampler;
-
 
         //Dimensões do terreno
         static public int altura;
@@ -38,10 +37,10 @@ namespace PrimeiraEntrega
 
             altura = heightmap.Height;
             vertexes = new VertexPositionNormalTexture[altura * altura];
-             //altera isto 
+             
             //Gerar vértices
             int x = 0, z = 0;
-            for (int j = 0; j < altura / 2; j++) //Criamos duas colunas de vértices de cada vez
+            for (int j = 0; j < altura / 2; j++) 
             {
                 for (int i = 0; i < altura * 2; i++)
                 {
@@ -61,21 +60,23 @@ namespace PrimeiraEntrega
                     z++;
                     if (z >= altura)
                     {
-                        //Criámos uma faixa vertical de vértices, passar para a outra faixa
                         x++;
                         z = 0;
                     }
                 }
             }
-
+           
+            
+            //alteraçoes
             //Gerar índices
-            indexes = new int[(altura * 2) * (altura - 1)];
+            indice = new short[(altura * 2) * (altura - 1)];
 
-            for (int i = 0; i < indexes.Length / 2; i++)
+            for (short i = 0; i < indice.Length / 2; i++)
             {
-                indexes[2 * i] = (int)i;
-                indexes[2 * i + 1] = (int)(i + altura);
+                indice[2 * i] = (short)i;
+                indice[2 * i + 1] = (short)(i + altura);
             }
+
             //Calcular normais
             CalcularNormais();
 
@@ -85,8 +86,8 @@ namespace PrimeiraEntrega
                 BufferUsage.WriteOnly);
             vertexBuffer.SetData<VertexPositionNormalTexture>(vertexes);
 
-            indexBuffer = new IndexBuffer(graphics, typeof(int), indexes.Length, BufferUsage.WriteOnly);
-            indexBuffer.SetData<int>(indexes);
+            indexBuffer = new IndexBuffer(graphics, typeof(int), indice.Length, BufferUsage.WriteOnly);
+            indexBuffer.SetData<short>(indice);
 
             //Definir os buffers a utilizar
             graphics.SetVertexBuffer(vertexBuffer);
@@ -95,7 +96,7 @@ namespace PrimeiraEntrega
             //Ativa o anisotropic filtering
             sampler = new SamplerState();
             sampler.Filter = TextureFilter.Anisotropic;
-            sampler.MaxAnisotropy = 4;
+            sampler.MaxAnisotropy = 2;
         }
        static private void CalcularNormais()
         {
@@ -330,11 +331,79 @@ namespace PrimeiraEntrega
                 }
             }
         }
+       
+        static public Vector3 NormalHeighmap(Vector3 posicao)
+       {
+           //Posição arredondada para baixo da camara
+           int xTank, zTank;
+           xTank = (int)posicao.X;
+           zTank = (int)posicao.Z;
 
-        static public VertexPositionNormalTexture[] getVertexes()
+           //Os 4 vértices que rodeiam a posição da camara
+           Vector2 pontoA, pontoB, pontoC, pontoD;
+           pontoA = new Vector2(xTank, zTank);
+           pontoB = new Vector2(xTank + 1, zTank);
+           pontoC = new Vector2(xTank, zTank + 1);
+           pontoD = new Vector2(xTank + 1, zTank + 1);
+
+
+           Vector3 Ya, Yb, Yc, Yd;
+           Ya = Terreno.vertexes[(int)pontoA.X * Terreno.altura + (int)pontoA.Y].Normal;
+           Yb = Terreno.vertexes[(int)pontoB.X * Terreno.altura + (int)pontoB.Y].Normal;
+           Yc = Terreno.vertexes[(int)pontoC.X * Terreno.altura + (int)pontoC.Y].Normal;
+           Yd = Terreno.vertexes[(int)pontoD.X * Terreno.altura + (int)pontoD.Y].Normal;
+
+           //Interpolação bilenear (dada nas aulas)
+           Vector3 Yab = (1 - (posicao.X - pontoA.X)) * Ya + (posicao.X - pontoA.X) * Yb;
+           Vector3 Ycd = (1 - (posicao.X - pontoC.X)) * Yc + (posicao.X - pontoC.X) * Yd;
+           Vector3 Y = (1 - (posicao.Z - pontoA.Y)) * Yab + (posicao.Z - pontoA.Y) * Ycd;
+
+           //Devolver normal
+           return Y;
+       }
+        static public float AlturaHeighmap(Vector3 positiçao)
         {
-            return (vertexes);
+            //Posição arredondada para baixo da camara
+            int xTank, zTank;
+            xTank = (int)positiçao.X;
+            zTank = (int)positiçao.Z;
+
+            //Os 4 vértices que rodeiam a posição da camara
+            Vector2 pontoA, pontoB, pontoC, pontoD;
+            pontoA = new Vector2(xTank, zTank);
+            pontoB = new Vector2(xTank + 1, zTank);
+            pontoC = new Vector2(xTank, zTank + 1);
+            pontoD = new Vector2(xTank + 1, zTank + 1);
+
+            if (positiçao.X > 0 && positiçao.X < Terreno.altura
+                        && positiçao.Z > 0 && positiçao.Z < Terreno.altura)
+            {
+
+                //Recolher a altura de cada um dos 4 vértices à volta do tanque a partir do heightmap
+                float Ya, Yb, Yc, Yd;
+                Ya = Terreno.vertexes[(int)pontoA.X * Terreno.altura + (int)pontoA.Y].Position.Y;
+                Yb = Terreno.vertexes[(int)pontoB.X * Terreno.altura + (int)pontoB.Y].Position.Y;
+                Yc = Terreno.vertexes[(int)pontoC.X * Terreno.altura + (int)pontoC.Y].Position.Y;
+                Yd = Terreno.vertexes[(int)pontoD.X * Terreno.altura + (int)pontoD.Y].Position.Y;
+
+                //Interpolação bilenear 
+                float Yab = (1 - (positiçao.X - pontoA.X)) * Ya + (positiçao.X - pontoA.X) * Yb;
+                float Ycd = (1 - (positiçao.X - pontoC.X)) * Yc + (positiçao.X - pontoC.X) * Yd;
+                float Y = (1 - (positiçao.Z - pontoA.Y)) * Yab + (positiçao.Z - pontoA.Y) * Ycd;
+
+                //Devolver a altura + um offset
+                return Y + 0.01f;
+            }
+            else
+            {
+                return -1;
+            }
         }
+        static public VertexPositionNormalTexture[] getVertices()
+        {
+            return (vertices);
+        }
+        public static VertexPositionNormalTexture[] vertices { get; set; }
 
         static public void Draw(GraphicsDevice graphics, BasicEffect efeito)
         {
@@ -354,10 +423,12 @@ namespace PrimeiraEntrega
                     vertexes,
                     i * altura,
                     altura * 2,
-                    indexes,
+                    indice,
                     0,
                     altura * 2 - 2);
             }
         }
+
+        
     }
 }

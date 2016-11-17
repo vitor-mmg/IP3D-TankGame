@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Tank2.cs" />
     <Compile Include="Tanque.cs" />
     <Compile Include="Terrreno.cs" />
     <Compile Include="Program.cs" />
@@ -60,9 +61,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\textura.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\tommy.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />
