@@ -16,7 +16,6 @@ C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntreg
 C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\obj\x86\Debug\PrimeiraEntrega.csprojResolveAssemblyReference.cache
 C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\obj\x86\Debug\PrimeiraEntrega.exe
 C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\obj\x86\Debug\PrimeiraEntrega.pdb
-C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\Tommy.jpg
 C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\terreno.jpg
 C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\textura.jpg
 C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\PrimeiraEntrega.exe

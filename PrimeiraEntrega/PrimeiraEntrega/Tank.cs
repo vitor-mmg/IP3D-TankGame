@@ -9,9 +9,8 @@ using System.Text;
 
 namespace PrimeiraEntrega
 {
-    public class Tanque
+    public class Tank
     {
-
         Model tankModel;
         public Matrix world;
         private GraphicsDevice device;
@@ -27,14 +26,10 @@ namespace PrimeiraEntrega
         private KeyboardState kbAnterior;
         private KeyboardState kbAnterior2;
         public Matrix inclinationMatrix; //Matriz que descreve a inclinação do tanque, causada pelos declives do terreno
-
         
-
-        private bool tanqueLigado;
+        private bool tankLigado;
     
-
-
-        public void ativarTanque(List<Tanque> listaTanques)
+        public void ativarTanque(List<Tank> listaTanques)
         {
            
             this.alive = true;
@@ -116,7 +111,7 @@ namespace PrimeiraEntrega
 
 
 
-        public Tanque(Random random, GraphicsDevice graphicsDevice, Vector3 position)
+        public Tank(Random random, GraphicsDevice graphicsDevice, Vector3 position)
         {
             moving = false;
             alive = true;
@@ -175,7 +170,7 @@ namespace PrimeiraEntrega
         }
 
 
-        public void Update(GameTime gameTime, List<Tanque> listaTanques, ContentManager content, Random random)
+        public void Update(GameTime gameTime, List<Tank> listaTanques, ContentManager content, Random random)
         {
             moving = false;
 
@@ -201,7 +196,7 @@ namespace PrimeiraEntrega
 
         public bool Ativado()
         {
-            return this.tanqueLigado;
+            return this.tankLigado;
         }
     
       /*  private void UpdateInput2(GameTime gameTime, ContentManager content, Random random)
@@ -296,11 +291,9 @@ namespace PrimeiraEntrega
                         this.wheelFrontLeftRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
                         this.wheelFrontRightRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
                     }
-
                 }
                 rotacaoY -= 0.8f;
                 steerRotationValue = -0.5f;
-
             }
 
             if (currentKeyboardState2.IsKeyDown(Keys.J))
@@ -333,10 +326,7 @@ namespace PrimeiraEntrega
                 rotacaoY += 0.8f;
                 steerRotationValue = 0.5f;
             }
-
-        
-     
-
+            
             posicao.Y = Terreno.AlturaHeighmap(posicao);
 
             rotacao = Matrix.CreateRotationY(MathHelper.ToRadians(180)) * Matrix.CreateRotationY(MathHelper.ToRadians(rotacaoY));
@@ -353,13 +343,10 @@ namespace PrimeiraEntrega
                 * Matrix.CreateTranslation(posicao);
 
             kbAnterior2 = currentKeyboardState2;
-        
-
         }*/
 
         private void UpdateInput(GameTime gameTime, ContentManager content, Random random)
         {
-
             KeyboardState currentKeyboardState = Keyboard.GetState();
 
             steerRotationValue = 0;
@@ -488,9 +475,6 @@ namespace PrimeiraEntrega
                 steerRotationValue = 0.5f;
             }
 
-        
-     
-
             posicao.Y = Terreno.AlturaHeighmap(posicao);
 
             rotacao = Matrix.CreateRotationY(MathHelper.ToRadians(180)) * Matrix.CreateRotationY(MathHelper.ToRadians(rotacaoY));
@@ -508,8 +492,6 @@ namespace PrimeiraEntrega
 
             kbAnterior = currentKeyboardState;
         }
-
-
 
         /// <summary>
         /// Draws the tank model, using the current animation settings.
@@ -555,15 +537,12 @@ namespace PrimeiraEntrega
 
                     effect.EnableDefaultLighting();
                     effect.DirectionalLight0.Direction = efeito.DirectionalLight0.Direction;
-
-
+                    
                     effect.DirectionalLight0.Enabled = true;
-
-
+                    
                 }
                 mesh.Draw();
             }
-
         }
     }
 }

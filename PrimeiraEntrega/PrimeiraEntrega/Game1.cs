@@ -16,11 +16,11 @@ namespace PrimeiraEntrega
         bool desenharTerreno;
         bool desenhatank;
         Random random;
-        Tanque tankPlayer1;
+        Tank tankPlayer1;
         Tank2 tankplayer2;
-        List<Tanque> listaTanque;
+        List<Tank> listaTanque;
         List<Tank2> listaTanque2;
-        Tanque tank;
+        Tank tank;
         Tank2 tank2;
 
 
@@ -42,7 +42,7 @@ namespace PrimeiraEntrega
             random = new Random();
             desenharTerreno = true;
             //tank
-            listaTanque = new List<Tanque>();
+            listaTanque = new List<Tank>();
             listaTanque2 = new List<Tank2>();
             desenhatank = true;
             this.Window.Title = "1ºEntrega";
@@ -55,7 +55,7 @@ namespace PrimeiraEntrega
             heightmap = Content.Load<Texture2D>("terreno");
             terrainTexture = Content.Load<Texture2D>("textura");
             //tank
-            tankPlayer1 = new Tanque(random, GraphicsDevice, new Vector3(random.Next(10, 50), 5, random.Next(Terreno.altura + 10 , Terreno.altura+10)));
+            tankPlayer1 = new Tank(random, GraphicsDevice, new Vector3(random.Next(10, 50), 5, random.Next(Terreno.altura + 10 , Terreno.altura+10)));
             tankPlayer1.LoadContent(Content);
             tankPlayer1.ativarTanque(listaTanque);
             listaTanque.Add(tankPlayer1);
@@ -107,7 +107,7 @@ namespace PrimeiraEntrega
                 Exit();
             Camera.Update(gameTime, GraphicsDevice);
             //update tank
-            foreach (Tanque tank in listaTanque)
+            foreach (Tank tank in listaTanque)
             {
                 tank.Update(gameTime, listaTanque, Content, random);
                 //tank.Update2(gameTime, listaTanque, Content, random);
@@ -125,7 +125,7 @@ namespace PrimeiraEntrega
             if (desenhatank)
             {
                 //Desenhar os tanques visiveis do ponto de vista da camara
-                foreach (Tanque tank in listaTanque)
+                foreach (Tank tank in listaTanque)
                 {
 
                     tank.Draw(GraphicsDevice, efeitoTerreno);

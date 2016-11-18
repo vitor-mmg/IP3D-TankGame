@@ -43,7 +43,7 @@ namespace PrimeiraEntrega
         {
             heightmap = alturaMapa;
             //Posição inicial da camâra
-            position = new Vector3(0, 1, 5);
+            position = new Vector3(10, 10, 10);
             //Inicializar as matrizes world, view e projection
             World = Matrix.Identity;
             UpdateViewMatrix();
