@@ -15,7 +15,8 @@ namespace PrimeiraEntrega
         //Matrizes World, View e Projection
         static public Matrix World, View, Projection;
         //Posição da camara
-        static private Vector3 position;
+        static private Vector3 posicao, positionAnterior;
+
         //Rotação horizontal
         static float leftrightRot = 0f;
         //Rotação vertical
@@ -43,7 +44,7 @@ namespace PrimeiraEntrega
         {
             heightmap = alturaMapa;
             //Posição inicial da camâra
-            position = new Vector3(0, 1, 5);
+            posicao = new Vector3(0, 1, 5);
             //Inicializar as matrizes world, view e projection
             World = Matrix.Identity;
             UpdateViewMatrix();
@@ -74,50 +75,63 @@ namespace PrimeiraEntrega
             //Target
             Vector3 cameraOriginalTarget = new Vector3(0, 0, -1);
             Vector3 cameraRotatedTarget = Vector3.Transform(cameraOriginalTarget, cameraRotation);
-            Vector3 cameraFinalTarget = position + cameraRotatedTarget;
-            
+            Vector3 cameraFinalTarget = posicao + cameraRotatedTarget;
+
             //Cálculo do vector Up
             Vector3 cameraOriginalUpVector = new Vector3(0, 1, 0);
             Vector3 cameraRotatedUpVector = Vector3.Transform(cameraOriginalUpVector, cameraRotation);
            
             //Matriz View
-            View = Matrix.CreateLookAt(position, cameraFinalTarget, cameraRotatedUpVector);
+            View = Matrix.CreateLookAt(posicao, cameraFinalTarget, cameraRotatedUpVector);
             
             frustum = new BoundingFrustum(View * Projection);
         }
         
         static float surfaceFollow()
-        {
-            //A e B - vertices superiores
-            //C e D - vertices inferiores 
-            //A-----------B
-            //C-----------D
-            int xA, zA, xB, zB, xC, zC, xD, zD;
-            float yA = 0, yB = 0, yC = 0, yD = 0;
-            xA = (int)position.X;
-            zA = (int)position.Z;
+        { 
+            //Posição arredondada para baixo
+            int xPos, zPos;
+            xPos = (int)posicao.X;
+            zPos = (int)posicao.Z;
 
-            xB = xA + 1;
-            zB = zA;
-            xC = xA;
-            zC = zA + 1;
-            xD = xB;
-            zD = zC;
+            //Os 4 vértices que rodeiam a posição da camara
+            Vector2 pontoA, pontoB, pontoC, pontoD;
+            pontoA = new Vector2(xPos, zPos);
+            pontoB = new Vector2(xPos + 1, zPos);
+            pontoC = new Vector2(xPos, zPos + 1);
+            pontoD = new Vector2(xPos + 1, zPos + 1);
 
-            //encontrar valor de Y de cada vertice
+            if (pontoA.X > 0 && pontoA.X < Terreno.altura
+            && pontoA.Y > 0 && pontoA.Y < Terreno.altura
+            && pontoB.X > 0 && pontoB.X < Terreno.altura
+            && pontoB.Y > 0 && pontoB.Y < Terreno.altura
+            && pontoC.X > 0 && pontoC.X < Terreno.altura
+            && pontoC.Y > 0 && pontoC.Y < Terreno.altura
+            && pontoD.X > 0 && pontoD.X < Terreno.altura
+            && pontoD.Y > 0 && pontoD.Y < Terreno.altura)
+            {
+                //Recolher a altura de cada um dos 4 vértices à volta da câmara a partir do heightmap
 
-            yA = vertices[xA * heightmap + zA].Position.Y;
-            yB = vertices[xB * heightmap + zB].Position.Y;
-            yC = vertices[xC * heightmap + zC].Position.Y;
-            yD = vertices[xD * heightmap + zD].Position.Y;
-            
-            //calcular nova altura da camara
-            float yAB, yCD, cameraY;
 
-            yAB = (1 - (position.X - xA)) * yA + (position.X - xA) * yB;
-            yCD = (1 - (position.X - xC)) * yC + (position.X - xC) * yD;
-            cameraY = (1 - (position.Z - zA)) * yAB + (position.Z - zA) * yCD;
-            return (cameraY + 1);
+                float Ya, Yb, Yc, Yd;
+                Ya = Terreno.vertexes[(int)pontoA.X * Terreno.altura + (int)pontoA.Y].Position.Y;
+                Yb = Terreno.vertexes[(int)pontoB.X * Terreno.altura + (int)pontoB.Y].Position.Y;
+                Yc = Terreno.vertexes[(int)pontoC.X * Terreno.altura + (int)pontoC.Y].Position.Y;
+                Yd = Terreno.vertexes[(int)pontoD.X * Terreno.altura + (int)pontoD.Y].Position.Y;
+              
+
+                //Interpolação bilenear (dada nas aulas)
+                float Yab = (1 - (posicao.X - pontoA.X)) * Ya + (posicao.X - pontoA.X) * Yb;
+                float Ycd = (1 - (posicao.X - pontoC.X)) * Yc + (posicao.X - pontoC.X) * Yd;
+                float Y = (1 - (posicao.Z - pontoA.Y)) * Yab + (posicao.Z - pontoA.Y) * Ycd;
+                
+                //Devolver a altura
+                return Y;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         static private void ProcessInput(float amount, GraphicsDevice graphics)
@@ -157,6 +171,8 @@ namespace PrimeiraEntrega
             if (keyState.IsKeyDown(Keys.NumPad9))
                 moveVector += new Vector3(0, -1, 0);
             AddToCameraPosition(moveVector * amount);
+            positionAnterior = posicao;
+
         }
         /// Atualiza a posição da camâra
      
@@ -164,9 +180,9 @@ namespace PrimeiraEntrega
         {
             Matrix cameraRotation = Matrix.CreateRotationX(updownRot) * Matrix.CreateRotationY(leftrightRot);
             Vector3 rotatedVector = Vector3.Transform(vectorToAdd, cameraRotation);
-            position += moveSpeed * rotatedVector;
+            posicao += moveSpeed * rotatedVector;
             UpdateViewMatrix();
-            //position.Y = surfaceFollow(); // Linha que define camara como surface follow, se nao tiver aqui a camara e igual a uma livre.
+            //posicao.Y = surfaceFollow(); // Linha que define camara como surface follow, se nao tiver aqui a camara e igual a uma livre.
         }
         /// Atualiza os parâmetros da camâra
     
@@ -175,5 +191,8 @@ namespace PrimeiraEntrega
             float timeDifference = (float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
             ProcessInput(timeDifference, graphics);
         }
+       
+      
     }
+
 }
