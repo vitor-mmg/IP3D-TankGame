@@ -65,7 +65,6 @@ namespace PrimeiraEntrega
                     }
                 }
             }
-           
             
             //alteraçoes
             //Gerar índices
@@ -142,7 +141,7 @@ namespace PrimeiraEntrega
 
 
                         Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2) + Vector3.Normalize(normal3) + Vector3.Normalize(normal4) +
-                            Vector3.Normalize(normal5) + Vector3.Normalize(normal6) + Vector3.Normalize(normal7) + Vector3.Normalize(normal8)) / 8;
+                        Vector3.Normalize(normal5) + Vector3.Normalize(normal6) + Vector3.Normalize(normal7) + Vector3.Normalize(normal8)) / 8;
 
                         vertexes[x * altura + z].Normal = Normal;
                     }
