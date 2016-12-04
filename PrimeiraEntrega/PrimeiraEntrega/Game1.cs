@@ -16,13 +16,14 @@ namespace PrimeiraEntrega
         bool desenharTerreno;
         bool desenhatank;
         Random random;
-        Tank tankPlayer1;
+        Tanque tankPlayer1;
         Tank2 tankplayer2;
-        List<Tank> listaTanque;
+        List<Tanque> listaTanque;
         List<Tank2> listaTanque2;
-        Tank tank;
+        Tanque tank;
         Tank2 tank2;
-
+        SistemaP particulasChuva;
+        int tamanhoPlano;
 
         public Game1()
         {
@@ -42,11 +43,19 @@ namespace PrimeiraEntrega
             random = new Random();
             desenharTerreno = true;
             //tank
-            listaTanque = new List<Tank>();
+            listaTanque = new List<Tanque>();
             listaTanque2 = new List<Tank2>();
             desenhatank = true;
             this.Window.Title = "1ºEntrega";
+            
+            
+            //Define o tamanho do plano, sendo que o raio da nuvem depende deste tamanho
+            tamanhoPlano = 500;
+
+            //Inicializar o sistema de partículas da chuva
+            particulasChuva = new SistemaP(random, tamanhoPlano , 15000, 20);
             base.Initialize();
+
         }
 
         protected override void LoadContent()
@@ -55,7 +64,7 @@ namespace PrimeiraEntrega
             heightmap = Content.Load<Texture2D>("terreno");
             terrainTexture = Content.Load<Texture2D>("textura");
             //tank
-            tankPlayer1 = new Tank(random, GraphicsDevice, new Vector3(random.Next(10, 50), 5, random.Next(Terreno.altura + 10 , Terreno.altura+10)));
+            tankPlayer1 = new Tanque(random, GraphicsDevice, new Vector3(random.Next(10, 50), 5, random.Next(Terreno.altura + 10 , Terreno.altura+10)));
             tankPlayer1.LoadContent(Content);
             tankPlayer1.ativarTanque(listaTanque);
             listaTanque.Add(tankPlayer1);
@@ -99,6 +108,7 @@ namespace PrimeiraEntrega
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            //Destruir a textura do plano
         }
     
         protected override void Update(GameTime gameTime)
@@ -107,7 +117,7 @@ namespace PrimeiraEntrega
                 Exit();
             Camera.Update(gameTime, GraphicsDevice);
             //update tank
-            foreach (Tank tank in listaTanque)
+            foreach (Tanque tank in listaTanque)
             {
                 tank.Update(gameTime, listaTanque, Content, random);
                 //tank.Update2(gameTime, listaTanque, Content, random);
@@ -116,6 +126,11 @@ namespace PrimeiraEntrega
             {
                 tank2.Update(gameTime, listaTanque2, Content, random);
             }
+
+
+            //Atualizar sistemas de partículas
+            particulasChuva.Update(random);
+
             base.Update(gameTime);
         }
         
@@ -125,7 +140,7 @@ namespace PrimeiraEntrega
             if (desenhatank)
             {
                 //Desenhar os tanques visiveis do ponto de vista da camara
-                foreach (Tank tank in listaTanque)
+                foreach (Tanque tank in listaTanque)
                 {
 
                     tank.Draw(GraphicsDevice, efeitoTerreno);
@@ -143,7 +158,10 @@ namespace PrimeiraEntrega
 
 
                 }
-            } 
+            }
+            //Desenhar os sistemas de partículas
+            particulasChuva.Draw(GraphicsDevice, efeitoTerreno);
+
             Terreno.Draw(GraphicsDevice, efeitoTerreno);
 
             base.Draw(gameTime);
