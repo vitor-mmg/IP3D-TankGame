@@ -116,7 +116,7 @@ namespace PrimeiraEntrega
 
 
 
-        public Tank2(Random random, GraphicsDevice graphicsDevice, Vector3 position)
+        public Tank2( GraphicsDevice graphicsDevice, Vector3 position)
         {
             moving = false;
             alive = true;
@@ -175,11 +175,11 @@ namespace PrimeiraEntrega
         }
 
 
-        public void Update(GameTime gameTime, List<Tank2> listaTanques2, ContentManager content, Random random)
+        public void Update(GameTime gameTime, List<Tank2> listaTanques2, ContentManager content)
         {
             moving = false;
 
-            UpdateInput(gameTime, content, random);
+            UpdateInput(gameTime, content);
 
 
             positionAnterior = posicao;
@@ -193,7 +193,7 @@ namespace PrimeiraEntrega
             return this.tanqueLigado;
         }
 
-         private void UpdateInput(GameTime gameTime, ContentManager content, Random random)
+         private void UpdateInput(GameTime gameTime, ContentManager content)
           {
                KeyboardState currentKeyboardState2 = Keyboard.GetState();
 

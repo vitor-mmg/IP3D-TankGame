@@ -11,7 +11,7 @@ namespace PrimeiraEntrega
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        BasicEffect efeitoTerreno;
+        BasicEffect efeitoTerreno,efeitoBasico;
         Texture2D heightmap, terrainTexture;
         bool desenharTerreno;
         bool desenhatank;
@@ -54,6 +54,9 @@ namespace PrimeiraEntrega
 
             //Inicializar o sistema de partículas da chuva
             particulasChuva = new SistemaP(random, tamanhoPlano , 15000, 20);
+
+            //GeneradorBalas.Initialize(Content);
+
             base.Initialize();
 
         }
@@ -63,13 +66,14 @@ namespace PrimeiraEntrega
             // Create a new SpriteBatch, which can be used to draw textures.
             heightmap = Content.Load<Texture2D>("terreno");
             terrainTexture = Content.Load<Texture2D>("textura");
+            
             //tank
-            tankPlayer1 = new Tanque(random, GraphicsDevice, new Vector3(random.Next(10, 50), 5, random.Next(Terreno.altura + 10 , Terreno.altura+10)));
+            tankPlayer1 = new Tanque( GraphicsDevice, new Vector3(random.Next(10, 50), 5, random.Next(Terreno.altura + 10 , Terreno.altura+10)));
             tankPlayer1.LoadContent(Content);
             tankPlayer1.ativarTanque(listaTanque);
             listaTanque.Add(tankPlayer1);
 
-            tankplayer2 = new Tank2(random, GraphicsDevice, new Vector3(random.Next(10, 50), 5, random.Next(Terreno.altura + 5, Terreno.altura + 10)));
+            tankplayer2 = new Tank2( GraphicsDevice, new Vector3(random.Next(10, 50), 5, random.Next(Terreno.altura + 5, Terreno.altura + 10)));
             tankplayer2.LoadContent(Content);
             tankplayer2.ativarTanque2(listaTanque2);
             listaTanque2.Add(tankplayer2);
@@ -84,10 +88,7 @@ namespace PrimeiraEntrega
             efeitoTerreno.DirectionalLight0.SpecularColor = new Vector3(0.5f, 0.5f, 0.5f);
             efeitoTerreno.SpecularPower = 1000f;
             efeitoTerreno.AmbientLightColor = new Vector3(0.4f, 0.4f, 0.4f);
-           
-            efeitoTerreno.SpecularColor = new Vector3(1, 1, 1);
-            efeitoTerreno.DirectionalLight1.Enabled = false;
-            efeitoTerreno.DirectionalLight2.Enabled = true;
+     
 
             efeitoTerreno.FogEnabled = true;
             efeitoTerreno.FogColor = Color.CornflowerBlue.ToVector3(); // For best results, ake this color whatever your background is.
@@ -101,6 +102,9 @@ namespace PrimeiraEntrega
             Camera.Initialize(GraphicsDevice, vertices, heightmap.Width);
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            efeitoBasico = new BasicEffect(GraphicsDevice);
+            efeitoBasico.VertexColorEnabled = true;
+
        
             // TODO: use this.Content to load your game content here
         }
@@ -119,12 +123,12 @@ namespace PrimeiraEntrega
             //update tank
             foreach (Tanque tank in listaTanque)
             {
-                tank.Update(gameTime, listaTanque, Content, random);
+                tank.Update(gameTime, listaTanque, Content);
                 //tank.Update2(gameTime, listaTanque, Content, random);
             }
             foreach(Tank2 tank2 in listaTanque2)
             {
-                tank2.Update(gameTime, listaTanque2, Content, random);
+                tank2.Update(gameTime, listaTanque2, Content);
             }
 
 
@@ -160,10 +164,18 @@ namespace PrimeiraEntrega
                 }
             }
             //Desenhar os sistemas de partículas
-            particulasChuva.Draw(GraphicsDevice, efeitoTerreno);
+            particulasChuva.Draw(GraphicsDevice, efeitoBasico);
 
             Terreno.Draw(GraphicsDevice, efeitoTerreno);
+            /*
+            foreach (Bala bala in GeneradoBalas.getListaBalas())
+            {
+                if (Camera.frustum.Contains(bala.BoundingSphere) != ContainmentType.Disjoint)
+                {
+                    bala.Draw();
+                }
 
+            }*/
             base.Draw(gameTime);
         }
     }

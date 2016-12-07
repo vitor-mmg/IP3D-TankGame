@@ -41,6 +41,7 @@
     <Compile Include="Balas.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="GeneradorBalas.cs" />
     <Compile Include="Particulas.cs" />
     <Compile Include="SistemaP.cs" />
     <Compile Include="Tank2.cs" />

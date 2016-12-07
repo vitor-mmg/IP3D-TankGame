@@ -24,7 +24,7 @@ namespace PrimeiraEntrega
         float velocidade;
 
         private KeyboardState kbAnterior;
-        private KeyboardState kbAnterior2;
+        
         public Matrix inclinationMatrix; //Matriz que descreve a inclinação do tanque, causada pelos declives do terreno
         
         private bool tankLigado;
@@ -111,7 +111,7 @@ namespace PrimeiraEntrega
 
 
 
-        public Tanque(Random random, GraphicsDevice graphicsDevice, Vector3 position)
+        public Tanque( GraphicsDevice graphicsDevice, Vector3 position)
         {
             moving = false;
             alive = true;
@@ -170,26 +170,16 @@ namespace PrimeiraEntrega
         }
 
 
-        public void Update(GameTime gameTime, List<Tanque> listaTanques, ContentManager content, Random random)
+        public void Update(GameTime gameTime, List<Tanque> listaTanques, ContentManager content)
         {
             moving = false;
 
-            UpdateInput(gameTime, content, random);
+            UpdateInput(gameTime, content);
            
 
             positionAnterior = posicao;
         }
-      //falta meter o segundo tanke apenas quando as suas teclas sao usadas , e nao quando uso as teclas do outro tanke
-       /* public void Update2(GameTime gameTime, List<Tanque> listaTanques, ContentManager content, Random random)
-        {
-            moving = false;
-
-            UpdateInput2(gameTime, content, random);
-
-
-            positionAnterior = posicao;
-        }*/
-       
+    
 
        
 
@@ -198,154 +188,8 @@ namespace PrimeiraEntrega
         {
             return this.tankLigado;
         }
-    
-      /*  private void UpdateInput2(GameTime gameTime, ContentManager content, Random random)
-        {
-             KeyboardState currentKeyboardState2 = Keyboard.GetState();
-
-            steerRotationValue = 0;
-
-            //  Move torre (só até 45 graus)
-            if (currentKeyboardState2.IsKeyDown(Keys.Left))
-            {
-                if (this.TurretRotation < 1.6f)
-                    this.TurretRotation += 0.01f;
-            }
-
-            if (currentKeyboardState2.IsKeyDown(Keys.Right))
-            {
-                if (this.TurretRotation >- 1.6f)
-                    this.TurretRotation -= 0.01f;
-            }
-
-            //  Move canhão 
-            if (currentKeyboardState2.IsKeyDown(Keys.Up))
-            {
-                if (this.CannonRotation > -0.8f)
-                    this.CannonRotation -= 0.01f;
-
-            }
-            if (currentKeyboardState2.IsKeyDown(Keys.Down))
-            {
-                if (this.CannonRotation < 0.2f)
-                    this.CannonRotation += 0.01f;
-            }
-
-            //  Abre e fecha a Comporta
-            if (currentKeyboardState2.IsKeyDown(Keys.PageUp))
-            {
-                this.HatchRotation = -1;
-            }
-            if (currentKeyboardState2.IsKeyDown(Keys.PageDown))
-            {
-                this.HatchRotation = 0;
-            }
-
-            if (currentKeyboardState2.IsKeyDown(Keys.I))
-            {
-                //Mover para a frente
-                this.wheelBackLeftRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * 5;
-                this.wheelBackRightRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * 5;
-                this.wheelFrontLeftRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * 5;
-                this.wheelFrontRightRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * 5;
-
-                posicao += Vector3.Normalize(direcao) * velocidade;
-                moving = true;
-            }
-
-            if (currentKeyboardState2.IsKeyDown(Keys.K))
-            {
-                //Mover para trás
-                this.wheelBackLeftRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
-                this.wheelBackRightRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
-                this.wheelFrontLeftRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
-                this.wheelFrontRightRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
-
-                posicao -= Vector3.Normalize(direcao) * velocidade;
-                moving = true;
-            }
-
-            if (currentKeyboardState2.IsKeyDown(Keys.L))
-            {
-                //Virar para a direita
-                if (!currentKeyboardState2.IsKeyDown(Keys.I) && !currentKeyboardState2.IsKeyDown(Keys.K))
-                {
-                    this.wheelBackLeftRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * 10;
-                    this.wheelBackRightRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
-                    this.wheelFrontLeftRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * 10;
-                    this.wheelFrontRightRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
-                }
-                else
-                {
-                    if (currentKeyboardState2.IsKeyDown(Keys.I))
-                    {
-                        this.wheelBackLeftRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * 10;
-                        this.wheelBackRightRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * 10;
-                        this.wheelFrontLeftRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * 10;
-                        this.wheelFrontRightRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * 10;
-                    }
-                    if (currentKeyboardState2.IsKeyDown(Keys.K))
-                    {
-                        this.wheelBackLeftRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
-                        this.wheelBackRightRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
-                        this.wheelFrontLeftRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
-                        this.wheelFrontRightRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
-                    }
-                }
-                rotacaoY -= 0.8f;
-                steerRotationValue = -0.5f;
-            }
-
-            if (currentKeyboardState2.IsKeyDown(Keys.J))
-            {
-                //Virar para a esquerda
-                if (!currentKeyboardState2.IsKeyDown(Keys.I) && !currentKeyboardState2.IsKeyDown(Keys.K))
-                {
-                    this.wheelBackLeftRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
-                    this.wheelBackRightRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * 10;
-                    this.wheelFrontLeftRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
-                    this.wheelFrontRightRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * 10;
-                }
-                else
-                {
-                    if (currentKeyboardState2.IsKeyDown(Keys.I))
-                    {
-                        this.wheelBackLeftRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * 10;
-                        this.wheelBackRightRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * 10;
-                        this.wheelFrontLeftRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * 10;
-                        this.wheelFrontRightRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * 10;
-                    }
-                    if (currentKeyboardState2.IsKeyDown(Keys.K))
-                    {
-                        this.wheelBackLeftRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
-                        this.wheelBackRightRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
-                        this.wheelFrontLeftRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
-                        this.wheelFrontRightRotationValue = -(float)gameTime.TotalGameTime.TotalSeconds * 10;
-                    }
-                }
-                rotacaoY += 0.8f;
-                steerRotationValue = 0.5f;
-            }
-            
-            posicao.Y = Terreno.AlturaHeighmap(posicao);
-
-            rotacao = Matrix.CreateRotationY(MathHelper.ToRadians(180)) * Matrix.CreateRotationY(MathHelper.ToRadians(rotacaoY));
-            direcao = Vector3.Transform(vetorBase, rotacao);
-
-            Vector3 Up = Terreno.NormalHeighmap(posicao);
-            Vector3 Right = Vector3.Cross(Up, direcao);
-            Vector3 Frente = Vector3.Cross(Up, Right);
-
-            inclinationMatrix = Matrix.CreateWorld(posicao, Frente, Up);
-
-            this.world = inclinationMatrix
-                * Matrix.CreateScale(scale)
-                * Matrix.CreateTranslation(posicao);
-
-            kbAnterior2 = currentKeyboardState2;
-        }*/
-
-        private void UpdateInput(GameTime gameTime, ContentManager content, Random random)
+  
+        private void UpdateInput(GameTime gameTime, ContentManager content)
         {
             KeyboardState currentKeyboardState = Keyboard.GetState();
 

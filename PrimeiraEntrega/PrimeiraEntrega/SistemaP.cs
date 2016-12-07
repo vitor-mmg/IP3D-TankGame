@@ -81,7 +81,7 @@ namespace PrimeiraEntrega
         private void matarERenascerParticulas(Random random)
         {
             //Encontrar todas as particulas que estejam abaixo do plano
-            List<Particulas> listaRemover = particulas.FindAll(x => x.posicao.Y < 0);
+            List<Particulas> listaRemover = particulas.FindAll(x => x.posicao.Y < 3);
 
             //Remover todas as particulas que se encontram abaixo do plano
             foreach (Particulas particula in listaRemover)
