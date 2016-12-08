@@ -36,3 +36,4 @@ C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntreg
 C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\turret_alt_diff_tex.xnb
 C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\turret_alt_diff_tex_0.xnb
 C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\Sphere.xnb
+C:\Users\vitor\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\grass50x50.jpg

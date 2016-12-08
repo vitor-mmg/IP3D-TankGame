@@ -10,104 +10,77 @@ namespace PrimeiraEntrega
 {
     public class Balas
     {
-        private Model bala;
-        public Vector3 posicao;
-        private Matrix inclinationMatrix;
-        private Vector3 vetorBase;
-        private float speed;
-        private Vector3 direcao;
-        private Matrix rotationMatrix;
-        private float totalTimePassed;
-        public bool alive;
-        public Tanque tanqueQueDisparou;
-        private Matrix[] transformacoes;
-        private BoundingSphere BoundingS;
-        
-        
-        public Balas(ContentManager content)
+        Model bulletModel;
+        public Matrix world,view,projection;
+        public Vector3 position,direcao;
+        float velocidade;
+        float time;
+        Vector3 vetorBase;
+        Tanque playerTank;
+        public BoundingSphere boundingSphere;
+        public bool balaDestruida;
+        public Balas(Tanque tank,ContentManager content)
         {
-            speed = 0.3f;
-            alive = false;
-
+            playerTank = tank;
             vetorBase = new Vector3(0, 0, 1);
-
+            balaDestruida = false;
+           
+            world = Matrix.CreateScale(0.3f) * Matrix.CreateTranslation(position);
             LoadContent(content);
-        }
-        public BoundingSphere BoundingSphere
-        {
-            get { return BoundingS; }
-            set { BoundingS = value; }
-        }
-        
-
-        private void LoadContent(ContentManager content)
-        {
-            bala = content.Load<Model>("Sphere");
-
+            //poicao e direcao da bala. cria se um offset para a bala começar na ponta do canhao, aplica-se todas as rotaçoes existentes no canhaoe calcula a direcao
+            //transformando o vetor direcao ( cross da normal do tanque com o vetor rigth da turret) com a rotacao.
+            Vector3 offset = new Vector3(0, 2, 3);
+            Matrix rotacao = Matrix.CreateRotationX(tank.CannonRotation) * Matrix.CreateRotationY(tank.TurretRotation) * Matrix.CreateFromQuaternion(tank.rotacaoFinal.Rotation);
+            offset = Vector3.Transform(offset, rotacao);
+            direcao = Vector3.Transform(Vector3.Cross(tank.newRigth, tank.newNormal), rotacao);
+            position = tank.position + offset;
+            boundingSphere = new BoundingSphere();
+            boundingSphere.Radius = 0.3f;
         }
 
-        public void Disparo(Tanque tanqueQueDisparou, float desvioAleatorio)
+        public void LoadContent(ContentManager content)
         {
-            this.alive = true;
-            this.totalTimePassed = 0;
-            this.tanqueQueDisparou = tanqueQueDisparou;
-            this.inclinationMatrix = tanqueQueDisparou.inclinationMatrix;
-            rotationMatrix = Matrix.CreateRotationX(tanqueQueDisparou.CannonRotation)
-                   * Matrix.CreateRotationY(tanqueQueDisparou.TurretRotation + desvioAleatorio)
-                   * Matrix.CreateFromQuaternion(tanqueQueDisparou.inclinationMatrix.Rotation)
-                   ;
+            velocidade = 0.05f;
+            bulletModel = content.Load<Model>("Sphere");
 
-            direcao = Vector3.Transform(vetorBase, rotationMatrix);
 
-            Vector3 offset = Vector3.Transform(new Vector3(0, 0.4f, 0), rotationMatrix);
-            offset = direcao + offset;
+        }
 
-            posicao = tanqueQueDisparou.posicao + offset;
+   
+
+        public void Update(GameTime gameTime,Tanque tank)
+        {
+            boundingSphere.Center = this.position;
+            time += (float)gameTime.ElapsedGameTime.TotalMilliseconds / 4096f;
+
+            position += (Vector3.Normalize(direcao) * velocidade);
+            position.Y -= 0.098f * (time * time);
+            world = Matrix.CreateScale(0.3f) * Matrix.CreateTranslation(position);
+
             
-            BoundingS.Center = posicao;
-            BoundingS.Radius = 0.1f;
-
         }
 
-        public void KillBala()
+        public void Draw(Matrix cameraView, Matrix cameraProjection)
         {
-            this.alive = false;
-        }
-       
-        public void Update(GameTime gameTime)
-        {
-            totalTimePassed += (float)gameTime.ElapsedGameTime.Milliseconds / 4096.0f;
-            posicao += direcao * speed;
-            posicao.Y -= totalTimePassed * totalTimePassed * speed * 2; //Gravidade
-            BoundingS.Center = posicao;
-
-        }
-        public void Draw()
-        {
-            // Copy any parent transforms.
-            transformacoes = new Matrix[bala.Bones.Count];
-            bala.CopyAbsoluteBoneTransformsTo(transformacoes);
-
-            // Draw the model. A model can have multiple meshes, so loop.
-            foreach (ModelMesh mesh in bala.Meshes)
+            bulletModel.Root.Transform = world;
+          
+            view = cameraView;
+            projection = cameraProjection;
+            
+            // Draw the model.
+            foreach (ModelMesh mesh in bulletModel.Meshes)
             {
-                // This is where the mesh orientation is set, as well 
-                // as our camera and projection.
                 foreach (BasicEffect effect in mesh.Effects)
                 {
+                    effect.World = bulletModel.Root.Transform;
+                    effect.View = view;
+                    effect.Projection = projection;
+                    
                     effect.EnableDefaultLighting();
-                    effect.World = Matrix.CreateScale(0.05f)
-                        * Matrix.CreateTranslation(this.posicao);
-                    effect.View = Camera.View;
-                    effect.Projection = Camera.Projection;
-
-
-
+                    
                 }
-                // Draw the mesh, using the effects set above.
                 mesh.Draw();
             }
-
         }
     }
 }

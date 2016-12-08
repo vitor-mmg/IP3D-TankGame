@@ -35,18 +35,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Balas.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="Camera2.cs" />
+    <Compile Include="CameraAula.cs" />
+    <Compile Include="CameraSurfaceFollow.cs" />
+    <Compile Include="CameraTank.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GeneradorBalas.cs" />
-    <Compile Include="Particulas.cs" />
+    <Compile Include="ParticulasTanque.cs" />
+    <Compile Include="RandomGenerator.cs" />
     <Compile Include="SistemaP.cs" />
-    <Compile Include="Tank2.cs" />
     <Compile Include="Tanque.cs" />
-    <Compile Include="Team.cs" />
     <Compile Include="Terrreno.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,13 +66,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\grass50x50.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\terreno.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\textura.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />

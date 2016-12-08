@@ -5,105 +5,115 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-
 namespace PrimeiraEntrega
 {
-    public class SistemaP
+    class SistemaP
     {
-        //Propriedades do sistema de particulas
-        //Lista de particulas
-        List<Particulas> particulas;
-        int nParticulas;
-        int alturaInicialChuva;
-        int raioNuvem;
-
-        public SistemaP(Random random, int raioNuvem, int nParticulas, int alturaInicialChuva)
+        List<ParticulasTanque> listaParticulas;
+        List<ParticulasTanque> listaParticulasAtiva;
+        GraphicsDevice device;
+        ParticulasTanque particulaTemp;
+        public Vector3 posicaoCentro;
+        public BasicEffect effect;
+        public Matrix worldMatrix;
+        int quantidadeParticulas;
+        float alturaRetangulo, larguraRetangulo;
+        public bool criarParticulas;
+        public SistemaP(GraphicsDevice device, Vector3 centro, float largura, float altura, Matrix worldTank)
         {
-            //Inicializar as propriedades
-            this.nParticulas = nParticulas;
-            this.alturaInicialChuva = alturaInicialChuva;
-            this.raioNuvem = raioNuvem;
-            particulas = new List<Particulas>();
 
-            //Criar um determinado numero de particulas
-            for (int i = 0; i < nParticulas; i++)
+            quantidadeParticulas = 3000;
+            posicaoCentro = centro;
+            this.device = device;
+
+            listaParticulas = new List<ParticulasTanque>(quantidadeParticulas);
+            listaParticulasAtiva = new List<ParticulasTanque>(quantidadeParticulas);
+
+            effect = new BasicEffect(device);
+            worldMatrix = Matrix.Identity;
+
+            effect.LightingEnabled = false;
+            effect.VertexColorEnabled = true;
+
+            this.larguraRetangulo = largura;
+            this.alturaRetangulo = altura;
+            CriarParticulas(quantidadeParticulas);
+
+            criarParticulas = true;
+        }
+        //a lista de particulas nao ativa é preenchida com a quantidade de particulas desejada
+        public void CriarParticulas(int quantidadeParticulas)
+        {
+            for (int i = 0; i < quantidadeParticulas; i++)
             {
-                inserirNovaParticula(random);
+                listaParticulas.Add(new ParticulasTanque(device, larguraRetangulo, alturaRetangulo, posicaoCentro, this.worldMatrix));
             }
         }
 
-        private void inserirNovaParticula(Random random)
+        public void Update(GameTime gametime, Vector3 posicao, Vector3 novaDirecao, Tanque tank)
         {
-            //Centro da nuvem
-            Vector3 centroNuvem = new Vector3(0, alturaInicialChuva, 0);
+            moverParaTraseiraTank(tank);
 
-            Vector3 posicao = Vector3.Zero;
-
-            //Inicializar propriedades da particula a criar
-            float angulo = (float)random.NextDouble() * MathHelper.TwoPi;
-            float magnitude = (float)random.NextDouble();
-            float alturaInicial = (float)random.NextDouble();
-            float velocidadeMedia = 0.03f;
-            float perturbacao = 0.05f;
-
-            //Posição X inicial da particula
-            posicao.X = centroNuvem.X + raioNuvem * magnitude * (float)Math.Cos(angulo);
-
-            if (particulas.Count < nParticulas - 10)
+            //para cada Update retiram-se x particulas da lista nao ativa e colocam-se as mesmas na lista de particulas ativas.
+            for (int i = 0; i < 5; i++)
             {
-                //Primeiras particulas, não geradas com uma altura aleatória
-                posicao.Y = centroNuvem.Y - (alturaInicial * alturaInicialChuva);
-            }
-            else
-            {
-                //Já existe um numero grande de particulas, particula nasce no plano da nuvem
-                posicao.Y = centroNuvem.Y;
+                if (listaParticulasAtiva.Count < quantidadeParticulas - 1000)
+                {
+                    //particula temporaria recebe a primeira particula da lista de nao ativas.
+                    particulaTemp = listaParticulas.First();
+                    //calcula posicao e direcao.
+                    if (criarParticulas && tank.playerControl)
+                        particulaTemp.CreateParticle(gametime, posicaoCentro, larguraRetangulo, alturaRetangulo, novaDirecao, tank, worldMatrix);
+                    //adiciona particula a lista ativa.
+                    listaParticulasAtiva.Add(particulaTemp);
+                    //remove da lista nao ativa.
+                    listaParticulas.Remove(particulaTemp);
+                }
             }
 
-            //Posição Z inicial da particula
-            posicao.Z = centroNuvem.X + raioNuvem * magnitude * (float)Math.Sin(angulo);
 
-            //Adicionar nova particula à lista de particulas deste sistema
-            particulas.Add(new Particulas(posicao, velocidadeMedia, perturbacao, random));
-        }
-
-        public void Update(Random random)
-        {
-            //Atualizar as particulas de chuva
-            foreach (Particulas particula in particulas)
+            foreach (ParticulasTanque p in listaParticulasAtiva)
             {
-                particula.Update();
-            }
-            //Verificar particulas que devem morrer e criar novas particulas para as substituir
-            matarERenascerParticulas(random);
-        }
+                //Update de cada particula da lista ativa.
+                p.Update(gametime);
+                //se a particula ultrapassar a posicao em Y de -10...
+                if (p.posicao.Y < -10f)
+                {
+                    //...é adicionada á lista nao ativa...
+                    listaParticulas.Add(p);
+                }
 
-        private void matarERenascerParticulas(Random random)
-        {
-            //Encontrar todas as particulas que estejam abaixo do plano
-            List<Particulas> listaRemover = particulas.FindAll(x => x.posicao.Y < 3);
-
-            //Remover todas as particulas que se encontram abaixo do plano
-            foreach (Particulas particula in listaRemover)
-            {
-                particulas.Remove(particula);
             }
-
-            //Inserir um numero de particulas igual ao numero de particulas que morreram
-            for (int i = 0; i < listaRemover.Count; i++)
-            {
-                inserirNovaParticula(random);
-            }
+            //... e é removida da lista ativa.
+            listaParticulasAtiva.RemoveAll(particula => particula.posicao.Y < -10f);
 
         }
 
-        public void Draw(GraphicsDevice graphics, BasicEffect efeito)
+        public void Draw(Matrix view, Matrix proj)
         {
-            //Desenhar as particulas geridas por este sistema
-            foreach (Particulas particula in particulas)
+            //cada particula na lista ativa é desenhada.
+            foreach (ParticulasTanque p in listaParticulasAtiva)
             {
-                particula.Draw(graphics, efeito);
+                p.Draw(view, proj, worldMatrix, device);
             }
+            //Create3DAxis.Draw(device, this.effect, view, proj, this.worldMatrix);
         }
+
+        private void moverParaTraseiraTank(Tanque tank)
+        {
+            Vector3 offset = new Vector3(-0.6f, 0.2f, -1f);
+            Matrix rotacao = Matrix.CreateTranslation(offset) * Matrix.CreateFromQuaternion(tank.rotacaoFinal.Rotation);
+            Vector3 transformOffset = Vector3.Transform(offset, rotacao);
+            this.posicaoCentro = transformOffset + tank.position;
+
+            this.worldMatrix = rotacao;
+            this.worldMatrix.Translation = transformOffset + tank.position;
+        }
+        public BasicEffect getEffect()
+        {
+            return effect;
+        }
+
+
     }
 }
