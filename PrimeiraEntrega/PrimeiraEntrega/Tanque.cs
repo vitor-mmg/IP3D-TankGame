@@ -514,7 +514,7 @@ namespace PrimeiraEntrega
             position.Y = newAltura;
             world = Matrix.CreateScale(scale) * Matrix.CreateTranslation(position);
             Vector3 newRight = Vector3.Cross(newNormal, direcao);
-            Matrix rotacaoUp = Matrix.CreateWorld(position, Vector3.Cross(newNormal, newRigth), newNormal);
+            Matrix rotacaoUp = Matrix.CreateWorld(position, Vector3.Cross(newNormal, newRight), newNormal);
             world = Matrix.CreateScale(scale) * rotacaoUp;
 
             posicaoAnterior = this.position;

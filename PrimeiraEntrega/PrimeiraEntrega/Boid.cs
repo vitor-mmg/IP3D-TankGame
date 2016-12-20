@@ -10,7 +10,7 @@ namespace PrimeiraEntrega
     {
         static float distancia;
         static float minidistancia;
-        static Vector3 força;
+        static Vector3 forca;
         static int cont;
 
         static public void Initialize()
@@ -21,7 +21,7 @@ namespace PrimeiraEntrega
         static public Vector3 Behaviour(List<Tanque> listatank, Tanque tank)
         {
             cont = 0;
-            força = Vector3.Zero;
+            forca = Vector3.Zero;
             foreach (Tanque npc in listatank)
             {
                 if (!npc.playerControl)
@@ -31,16 +31,18 @@ namespace PrimeiraEntrega
                     {
                         Vector3 dif = tank.position - npc.position;
                         Vector3.Normalize(dif);
-                        força += dif;
+                        forca += dif;
 
                         cont++;
                     }
                 }
             }
             if (cont > 0)
-                força = força / cont;
+            {
+                forca = forca / cont;
+            }
 
-            return força;
+            return forca;
         }
     }
 }
