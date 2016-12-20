@@ -27,7 +27,7 @@ namespace PrimeiraEntrega
         Tanque tankEnimigo2;
         Tanque tankEnimigo3;
         List<Tanque> listaTanques;
-
+        List<Balas> balas;
         enum CameraAtiva
         {
             fps,
@@ -151,6 +151,37 @@ namespace PrimeiraEntrega
             tankEnimigo3.Update(gameTime, tank, listaTanques);
             GeneradorBalas.UpdateBalas(gameTime);
 
+            //Colisao de tanks
+            foreach (Tanque Tank in listaTanques)
+            {
+                if (!Tank.playerControl)
+                {
+                    if (tank.boundingSphere.Intersects(Tank.boundingSphere))
+                    {
+                        //tank.velocidade = 0;
+                        Tank.velocidade = 0;
+                    }
+                    else
+                    {
+                        Tank.velocidade = 0.07f;
+                    }
+                }
+            }
+
+            //colisao das balas com tanques inimigos
+            //obter lista de balas ativas
+            balas = GeneradorBalas.getListaBalasAtivas();
+            foreach (Balas bala in balas)
+            {
+                foreach (Tanque tankinimigo in listaTanques)
+                {
+                    if (bala.boundingSphere.Intersects(tankinimigo.boundingSphere))
+                    {
+                        tankinimigo.tankDestroyed = true;
+                        bala.balaDestruida = true;
+                    }
+                }
+            }
             base.Update(gameTime);
         }
 
