@@ -237,6 +237,10 @@ namespace PrimeiraEntrega
                     UpdateTankRotation();
                     //sistemaParticulas.Update(gameTime, posicaoSistemaParticulas());
                 }
+                else
+                {
+                    boidControl(playerTank.position, listTanksInimigos);
+                }
                 if (bala != null)
                     bala.Update(gameTime, this);
             }
@@ -478,6 +482,40 @@ namespace PrimeiraEntrega
             {
                 this.position.Z = posicaoAnterior.Z; ;
             }
+        }
+
+        private void boidControl(Vector3 playerposition, List<Tanque> listatanques)
+        {
+            verificarLimites(posicaoAnterior);
+
+            Vector3 desvio = Boid.Behaviour(listatanques, this);
+            desvio = desvio * velocidade;
+            Vector3 aceleracaodesvio = (desvio - direcao) * velocidadeMaxima;
+
+            Vector3 direcaoPlayer = playerposition - position;
+            direcaoPlayer = direcaoPlayer * velocidade;
+            acelaracao = (direcaoPlayer - direcao) * velocidadeMaxima;
+
+            //Se o comportamento é seguir o player
+            if (desvio == Vector3.Zero)
+            {
+                direcao = direcao + acelaracao;
+            }
+            //Se o comportamento é fugir
+            else
+            {
+                direcao = direcao + aceleracaodesvio;
+            }
+
+            position += Vector3.Normalize(direcao) * velocidade;
+
+            position.Y = newAltura;
+            world = Matrix.CreateScale(scale) * Matrix.CreateTranslation(position);
+            Vector3 newRight = Vector3.Cross(newNormal, direcao);
+            Matrix rotacaoUp = Matrix.CreateWorld(position, Vector3.Cross(newNormal, newRigth), newNormal);
+            world = Matrix.CreateScale(scale) * rotacaoUp;
+
+            posicaoAnterior = this.position;
         }
     }
 }

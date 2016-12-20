@@ -107,6 +107,7 @@ namespace PrimeiraEntrega
             tankEnimigo2.LoadContent(Content);
             tankEnimigo3.LoadContent(Content);
             GeneradorBalas.Initialize(tank, Content);
+            Boid.Initialize();
         }
 
         /// <summary>
