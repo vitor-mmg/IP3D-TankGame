@@ -17,9 +17,7 @@ namespace PrimeiraEntrega
         VertexPositionNormalTexture[] vertices;
         Tanque tank;
         public Matrix view, projection, worldMatrix;
-
-
-
+        
         enum ActivarCamara
         {
             fps,
@@ -29,10 +27,8 @@ namespace PrimeiraEntrega
 
         ActivarCamara activarcamara;
 
-
         public void Initialize(GraphicsDeviceManager graphics, VertexPositionNormalTexture[] vertices, int alturaMapa, Vector3 posicaoTank, Matrix worldTank, Matrix ViewTank, Tanque tank)
         {
-
             this.tank = tank;
 
             this.alturaMapa = alturaMapa;
@@ -41,36 +37,20 @@ namespace PrimeiraEntrega
             cameraAula = new CameraAula(graphics);
             cameraSurface = new CameraSurfaceFollow(graphics, vertices, alturaMapa);
             cameraTank = new CameraTank(graphics, vertices, alturaMapa, posicaoTank, worldTank, ViewTank);
-
-
-
         }
-
-
+        
         public void UpdateInput()
         {
             KeyboardState kb = Keyboard.GetState();
 
             if (kb.IsKeyDown(Keys.F1))
-            {
-
                 activarcamara = ActivarCamara.fps;
-            }
             if (kb.IsKeyDown(Keys.F2))
-            {
                 activarcamara = ActivarCamara.free;
-            }
             if (kb.IsKeyDown(Keys.F3))
-            {
                 activarcamara = ActivarCamara.cameraTank;
-            }
-
-
-
         }
-
-
-
+        
         public void Update(GameTime gameTime, GraphicsDeviceManager graphics)
         {
             UpdateInput();
@@ -79,8 +59,7 @@ namespace PrimeiraEntrega
                 cameraSurface.UpdateInput(gameTime, graphics);
                 view = cameraSurface.view;
                 projection = cameraSurface.projection;
-
-
+                
                 //tank.view = cameraSurfaceFollow.view;
                 //tank.projection = cameraSurfaceFollow.projection;
             }
@@ -95,7 +74,6 @@ namespace PrimeiraEntrega
             }
             else
             {
-
                 //cameraSurfaceFollow.updateCamera();
                 //cameraTank.UpdateInput(gameTime, graphics,tank.getPosition());
                 cameraTank.updateCamera(tank.getPosition(), tank.getWorldMAtrix(), tank.view, tank);
@@ -103,10 +81,6 @@ namespace PrimeiraEntrega
                 projection = cameraTank.projection;
                 worldMatrix = cameraTank.worldMatrix;
             }
-
-
-
         }
-
     }
 }

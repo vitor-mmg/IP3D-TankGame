@@ -23,7 +23,6 @@ namespace PrimeiraEntrega
         MouseState posicaoRatoInicial;
         public CameraAula(GraphicsDeviceManager graphics)
         {
-
             velocidade = 0.5f;
             vetorBase = new Vector3(1, -0.5f, 0);
             posicao = new Vector3(50, 50, 50);
@@ -37,27 +36,20 @@ namespace PrimeiraEntrega
             updateCamera();
         }
 
-
         public void frente()
         {
-
             //time = gameTime.ElapsedGameTime.Milliseconds;
             posicao = posicao + velocidade * direcao;
             target = posicao + direcao;//posicao + direcao;
-
         }
 
         public void moverTras(GameTime gameTime)
         {
-
             time = gameTime.ElapsedGameTime.Milliseconds;
             posicao = posicao - velocidade * direcao;
             target = posicao + direcao;//posicao + direcao;
         }
-
-
-
-
+        
         public void rodarDireitaEsquerda(GameTime gameTime)
         {
             time = gameTime.ElapsedGameTime.Milliseconds;
@@ -72,27 +64,22 @@ namespace PrimeiraEntrega
             pitch -= diferencaY * grausPorPixel;
         }
 
-
         public void strafeEsquerda(GameTime gameTime, float strafe)
         {
-
             time = gameTime.ElapsedGameTime.Milliseconds;
             this.strafe = strafe + velocidade * time;
             posicao = posicao - velocidade * Vector3.Cross(direcao, Vector3.Up);
 
             target = posicao + direcao;
-
         }
 
         public void strafeDireita(GameTime gameTime, float strafe)
         {
-
             time = gameTime.ElapsedGameTime.Milliseconds;
             this.strafe = strafe + velocidade * time;
             posicao = posicao + velocidade * Vector3.Cross(direcao, Vector3.Up);
 
             target = posicao + direcao;
-
         }
 
         public void UpdateInput(GameTime gameTime, GraphicsDeviceManager graphics)
@@ -133,14 +120,12 @@ namespace PrimeiraEntrega
                 }
                 catch (Exception e)
                 { }
-
             }
             updateCamera();
         }
 
         public void updateCamera()
         {
-
             rotacao = Matrix.CreateFromYawPitchRoll(yaw, 0, pitch);
             worldMatrix = rotacao;
             direcao = Vector3.Transform(vetorBase, rotacao);

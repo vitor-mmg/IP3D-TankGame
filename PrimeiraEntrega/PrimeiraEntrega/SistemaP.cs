@@ -20,8 +20,7 @@ namespace PrimeiraEntrega
         float alturaRetangulo, larguraRetangulo;
         public bool criarParticulas;
         public SistemaP(GraphicsDevice device, Vector3 centro, float largura, float altura, Matrix worldTank)
-        {
-
+        { 
             quantidadeParticulas = 3000;
             posicaoCentro = centro;
             this.device = device;
@@ -45,7 +44,7 @@ namespace PrimeiraEntrega
         public void CriarParticulas(int quantidadeParticulas)
         {
             for (int i = 0; i < quantidadeParticulas; i++)
-            {
+            { 
                 listaParticulas.Add(new ParticulasTanque(device, larguraRetangulo, alturaRetangulo, posicaoCentro, this.worldMatrix));
             }
         }
@@ -58,7 +57,7 @@ namespace PrimeiraEntrega
             for (int i = 0; i < 5; i++)
             {
                 if (listaParticulasAtiva.Count < quantidadeParticulas - 1000)
-                {
+                { 
                     //particula temporaria recebe a primeira particula da lista de nao ativas.
                     particulaTemp = listaParticulas.First();
                     //calcula posicao e direcao.
@@ -70,8 +69,7 @@ namespace PrimeiraEntrega
                     listaParticulas.Remove(particulaTemp);
                 }
             }
-
-
+            
             foreach (ParticulasTanque p in listaParticulasAtiva)
             {
                 //Update de cada particula da lista ativa.
@@ -82,18 +80,16 @@ namespace PrimeiraEntrega
                     //...é adicionada á lista nao ativa...
                     listaParticulas.Add(p);
                 }
-
-            }
+            } 
             //... e é removida da lista ativa.
             listaParticulasAtiva.RemoveAll(particula => particula.posicao.Y < -10f);
-
         }
 
         public void Draw(Matrix view, Matrix proj)
         {
             //cada particula na lista ativa é desenhada.
             foreach (ParticulasTanque p in listaParticulasAtiva)
-            {
+            { 
                 p.Draw(view, proj, worldMatrix, device);
             }
             //Create3DAxis.Draw(device, this.effect, view, proj, this.worldMatrix);
@@ -105,15 +101,14 @@ namespace PrimeiraEntrega
             Matrix rotacao = Matrix.CreateTranslation(offset) * Matrix.CreateFromQuaternion(tank.rotacaoFinal.Rotation);
             Vector3 transformOffset = Vector3.Transform(offset, rotacao);
             this.posicaoCentro = transformOffset + tank.position;
-
+             
             this.worldMatrix = rotacao;
             this.worldMatrix.Translation = transformOffset + tank.position;
         }
+
         public BasicEffect getEffect()
         {
             return effect;
         }
-
-
     }
 }

@@ -10,7 +10,6 @@ namespace PrimeiraEntrega
 {
     static class GeneradorBalas
     {
-
         static List<Balas> balasAtivas;
         static List<Balas> balasNaoAtivas;
         static List<Balas> copiaBalasAtivas;
@@ -19,8 +18,7 @@ namespace PrimeiraEntrega
         static ContentManager content;
         static Balas balaTemp;
         static Vector3 posicaoBala, direcaoBala;
-
-
+        
         static public void Initialize(Tanque tankQueDispara, ContentManager cont)
         {
             balasAtivas = new List<Balas>(500);
@@ -38,7 +36,6 @@ namespace PrimeiraEntrega
 
         static public void PosicaoDirecaoBala()
         {
-
             Vector3 offset = new Vector3(0, 2, 3);
             Matrix rotacao = Matrix.CreateRotationX(tank.CannonRotation) * Matrix.CreateRotationY(tank.TurretRotation) * Matrix.CreateFromQuaternion(tank.rotacaoFinal.Rotation);
 
@@ -57,18 +54,13 @@ namespace PrimeiraEntrega
 
             balasAtivas.Add(balaTemp);
             balasNaoAtivas.Remove(balaTemp);
-
         }
 
         static public void removerBala(Balas bala)
         {
-
             balasAtivas.Remove(bala);
             balasNaoAtivas.Add(bala);
-
         }
-
-
 
         static public void UpdateBalas(GameTime gameTime)
         {
@@ -76,16 +68,15 @@ namespace PrimeiraEntrega
             foreach (Balas bala in balasAtivas)
             {
                 bala.Update(gameTime, tank);
-
             }
             balasAtivas.RemoveAll(b => b.position.Y < -50f);
             balasAtivas.RemoveAll(b => b.balaDestruida == true);
         }
+
         static public void DrawBalas(Matrix view, Matrix projection)
         {
             foreach (Balas bala in balasAtivas)
             {
-
                 bala.Draw(view, projection);
             }
         }
@@ -94,6 +85,5 @@ namespace PrimeiraEntrega
         {
             return balasAtivas;
         }
-
     }
 }

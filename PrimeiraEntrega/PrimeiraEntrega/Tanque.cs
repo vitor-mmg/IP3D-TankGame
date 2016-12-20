@@ -15,8 +15,6 @@ namespace PrimeiraEntrega
     public class Tanque
     {
         #region Fields
-
-
         // The XNA framework Model object that we are going to display.
         Model tankModel;
         //  Matrizes do modelo
@@ -71,8 +69,7 @@ namespace PrimeiraEntrega
         ModelBone turretBone;
         ModelBone cannonBone;
         ModelBone hatchBone;
-
-
+        
         // Store the original transform matrix for each animating bone.
         Matrix leftBackWheelTransform;
         Matrix rightBackWheelTransform;
@@ -83,28 +80,22 @@ namespace PrimeiraEntrega
         public Matrix turretTransform;
         public Matrix cannonTransform;
         Matrix hatchTransform;
-
-
+        
         // Array holding all the bone transform matrices for the entire model.
         // We could just allocate this locally inside the Draw method, but it
         // is more efficient to reuse a single array, as this avoids creating
         // unnecessary garbage.
         Matrix[] boneTransforms;
-
-
+        
         // Current animation positions.
         float wheelRotationValue;
         float steerRotationValue;
         float turretRotationValue;
         float cannonRotationValue;
         float hatchRotationValue;
-
-
         #endregion
 
         #region Properties
-
-
         /// <summary>
         /// Gets or sets the wheel rotation amount.
         /// </summary>
@@ -113,7 +104,6 @@ namespace PrimeiraEntrega
             get { return wheelRotationValue; }
             set { wheelRotationValue = value; }
         }
-
 
         /// <summary>
         /// Gets or sets the steering rotation amount.
@@ -124,7 +114,6 @@ namespace PrimeiraEntrega
             set { steerRotationValue = value; }
         }
 
-
         /// <summary>
         /// Gets or sets the turret rotation amount.
         /// </summary>
@@ -133,7 +122,6 @@ namespace PrimeiraEntrega
             get { return turretRotationValue; }
             set { turretRotationValue = value; }
         }
-
 
         /// <summary>
         /// Gets or sets the cannon rotation amount.
@@ -144,7 +132,6 @@ namespace PrimeiraEntrega
             set { cannonRotationValue = value; }
         }
 
-
         /// <summary>
         /// Gets or sets the entry hatch rotation amount.
         /// </summary>
@@ -153,8 +140,6 @@ namespace PrimeiraEntrega
             get { return hatchRotationValue; }
             set { hatchRotationValue = value; }
         }
-
-
         #endregion
 
         public Tanque(GraphicsDevice graphicsDevice, VertexPositionNormalTexture[] vert, int larguraMapa, Vector3 position, bool playerControl, ContentManager content)
@@ -188,15 +173,13 @@ namespace PrimeiraEntrega
             boundingSphere = new BoundingSphere();
             boundingSphere.Radius = 3f;
             //lista de balas
-
-
+            
             velocidadeMaxima = 0.005f;
 
             //particulas
             sistemaParticulasTraseira = new SistemaP(device, this.position, 2.8f, 0.5f, this.world);
             sistemaParticulasTraseiraEnabled = false;
-
-
+            
             tankDestroyed = false;
         }
 
@@ -207,8 +190,7 @@ namespace PrimeiraEntrega
         {
             // Load the tank model from the ContentManager.
             tankModel = content.Load<Model>("tank");
-
-
+            
             // Look up shortcut references to the bones we are going to animate.
             leftBackWheelBone = tankModel.Bones["l_back_wheel_geo"];
             rightBackWheelBone = tankModel.Bones["r_back_wheel_geo"];
@@ -240,16 +222,12 @@ namespace PrimeiraEntrega
 
             view = Matrix.CreateLookAt(new Vector3(0, 10, 10), Vector3.Zero, Vector3.Up);
             projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspectRatio, 1, 100);
-
-
-
         }
 
         public void Update(GameTime gameTime, Tanque playerTank, List<Tanque> listTanksInimigos)
         {
             if (!tankDestroyed)
             {
-
                 findNormal();
                 boundingSphere.Center = this.position;
 
@@ -259,21 +237,11 @@ namespace PrimeiraEntrega
                     UpdateTankRotation();
                     //sistemaParticulas.Update(gameTime, posicaoSistemaParticulas());
                 }
-               
-
-
                 if (bala != null)
                     bala.Update(gameTime, this);
-
-
             }
             sistemaParticulasTraseira.Update(gameTime, position, Vector3.Cross(newNormal, newRigth), this);
-        
-
         }
-
-
-
 
         /// <summary>
         /// Draws the tank model, using the current animation settings.
@@ -285,8 +253,7 @@ namespace PrimeiraEntrega
 
             tankModel.Root.Transform = world;
             //tankModel.Root.Transform =  Matrix.CreateScale(0.01f) * Matrix.CreateTranslation(position);
-
-
+            
             // Calculate matrices based on the current animation position.
             Matrix wheelRotation = Matrix.CreateRotationX(wheelRotationValue);
             Matrix steerRotation = Matrix.CreateRotationY(steerRotationValue);
@@ -314,13 +281,11 @@ namespace PrimeiraEntrega
 
             if (bala != null)
                 bala.Draw(view, projection);
-
-
+            
             //particulas
 
             sistemaParticulasTraseira.Draw(view, projection);
             
-
             foreach (ModelMesh mesh in tankModel.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
@@ -340,13 +305,11 @@ namespace PrimeiraEntrega
             //A e B sao vetores superiores, C e D sao os vetores inferiores
             //A-----------B
             //C-----------D
-
             int xA, zA, xB, zB, xC, zC, xD, zD;
             //int A,B,C,D;
             float yA = 0, yB = 0, yC = 0, yD = 0;
             Vector3 normalA, normalB, normalC, normalD;
-
-
+            
             xA = (int)this.position.X;
             zA = (int)this.position.Z;
 
@@ -358,8 +321,7 @@ namespace PrimeiraEntrega
 
             xD = xB;
             zD = zC;
-
-
+            
             //encontrar altura para o tanque
             yA = vertices[xA * larguraMapa + zA].Position.Y;
             yB = vertices[xB * larguraMapa + zB].Position.Y;
@@ -379,8 +341,7 @@ namespace PrimeiraEntrega
 
             //this.world.Up 
             newNormal = (1 - (this.position.Z - zA)) * normalAB + (this.position.Z - zA) * normalCD;
-
-
+            
             //calcular nova altura da tanque
             float yAB, yCD;
 
@@ -395,16 +356,14 @@ namespace PrimeiraEntrega
         private void HandleTankInput(float time, GameTime gameTime)
         {
             KeyboardState currentKeyboardState = Keyboard.GetState();
-
             //  Roda as rodas to tanque
-
-
             //  Move torre (só até 90 graus)
             if (currentKeyboardState.IsKeyDown(Keys.Left))
             {
                 if (this.TurretRotation < 1.6f)
                     this.TurretRotation += 0.01f;
             }
+
             if (currentKeyboardState.IsKeyDown(Keys.Right))
             {
                 if (this.TurretRotation > -1.6f)
@@ -416,8 +375,8 @@ namespace PrimeiraEntrega
             {
                 if (this.CannonRotation > -0.8f)
                     this.CannonRotation -= 0.01f;
-
             }
+
             if (currentKeyboardState.IsKeyDown(Keys.Down))
             {
                 if (this.CannonRotation < 0.2f)
@@ -429,6 +388,7 @@ namespace PrimeiraEntrega
             {
                 this.HatchRotation = -1;
             }
+
             if (currentKeyboardState.IsKeyDown(Keys.PageDown))
             {
                 this.HatchRotation = 0;
@@ -443,24 +403,22 @@ namespace PrimeiraEntrega
 
             if (currentKeyboardState.IsKeyDown(Keys.D))
             {
-
                 rotacaoY -= 0.5f;
                 steerRotationValue = -0.6f;
-
             }
+
             if (currentKeyboardState.IsKeyDown(Keys.W))
             {
                 this.WheelRotation += time * 5;
                 position += direcao * velocidade;
-              
             }
            
             if (currentKeyboardState.IsKeyDown(Keys.S))
             {
                 this.WheelRotation -= time * 5;
                 position -= direcao * velocidade;
-
             }
+
             if (!currentKeyboardState.IsKeyDown(Keys.D) && !currentKeyboardState.IsKeyDown(Keys.A))
             {
                 steerRotationValue = 0f;
@@ -468,7 +426,6 @@ namespace PrimeiraEntrega
             //disparar bala
             if (currentKeyboardState.IsKeyDown(Keys.B))
             {
-
                 gTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (gTime - timePassed > 0.5f)
                 {
@@ -476,16 +433,11 @@ namespace PrimeiraEntrega
                     timePassed = gTime;
                     Console.WriteLine(CannonRotation);
                 }
-
-
             }
-
-
         }
 
         private void UpdateTankRotation()
         {
-
             verificarLimites(posicaoAnterior);
             position.Y = newAltura;
             rotacao = Matrix.CreateRotationY(MathHelper.ToRadians(-90)) * Matrix.CreateRotationY(MathHelper.ToRadians(rotacaoY));
@@ -496,11 +448,8 @@ namespace PrimeiraEntrega
 
             world = Matrix.CreateScale(scale) * rotacaoFinal;
             posicaoAnterior = this.position;
-
         }
-
-       
-
+        
         public Vector3 getPosition()
         {
             return (position);
@@ -512,7 +461,6 @@ namespace PrimeiraEntrega
 
         public void verificarLimites(Vector3 posicaoAnterior)
         {
-
             //verificar se esta fora do terreno
             if (this.position.X - 1 < 0)
             {
@@ -531,6 +479,5 @@ namespace PrimeiraEntrega
                 this.position.Z = posicaoAnterior.Z; ;
             }
         }
-
     }
 }

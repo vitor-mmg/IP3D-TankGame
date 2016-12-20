@@ -40,7 +40,6 @@ namespace PrimeiraEntrega
             //define a velocidade a que a particula se desloca.
             velocidadeQueda = 0.03f;
             effect.VertexColorEnabled = true;
-
         }
 
         public void CreateParticle(GameTime gametime, Vector3 posicaoCentro, float larguraRetangulo, float alturaRetangulo, Vector3 novaDirecao, Tanque tank, Matrix worldSistema)
@@ -54,7 +53,6 @@ namespace PrimeiraEntrega
 
             magnitudeLargura = randomMagnitude;
             magnitudeAltura = randomMagnitude;
-
 
             //para definir a posicao soma-se ao centro o valor da largura do retangulo mais a magnitude para que encontre
             //em ponto intermiedio entre o centro e o limite exterior.
@@ -71,7 +69,6 @@ namespace PrimeiraEntrega
             //a direcao da particula é calculada atraves do cross entre o vetor direcao do tanque e o vetor direita.
             Vector3 direcao = RandomGenerator.getRandomNextDouble() * novaDirecao + new Vector3(0, 1, 0);
             velocidade = direcao;
-
         }
 
         public void Update(GameTime gametime)
@@ -87,27 +84,19 @@ namespace PrimeiraEntrega
 
             vertices[0].Position = posicao;
             vertices[1].Position = posicao + new Vector3(0, 0.02f, 0);
-
         }
 
         public void Draw(Matrix Cview, Matrix Cproj, Matrix sistemaWorld, GraphicsDevice device)
         {
-
             effect.TextureEnabled = false;
             effect.VertexColorEnabled = true;
             this.effect.View = Cview;
             this.effect.Projection = Cproj;
 
-
-
             effect.CurrentTechnique.Passes[0].Apply();
             //cada instancia da partcula desenha os seus dois vertices
             device.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, 1);
             //Create3DAxis.Draw(device, effect, Cview, Cproj, this.worldMatrix);
-
         }
-
-
-
     }
 }

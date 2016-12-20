@@ -42,12 +42,8 @@ namespace PrimeiraEntrega
         {
             velocidade = 0.05f;
             bulletModel = content.Load<Model>("Sphere");
-
-
         }
-
-   
-
+        
         public void Update(GameTime gameTime,Tanque tank)
         {
             boundingSphere.Center = this.position;
@@ -56,8 +52,6 @@ namespace PrimeiraEntrega
             position += (Vector3.Normalize(direcao) * velocidade);
             position.Y -= 0.098f * (time * time);
             world = Matrix.CreateScale(0.3f) * Matrix.CreateTranslation(position);
-
-            
         }
 
         public void Draw(Matrix cameraView, Matrix cameraProjection)
@@ -77,7 +71,6 @@ namespace PrimeiraEntrega
                     effect.Projection = projection;
                     
                     effect.EnableDefaultLighting();
-                    
                 }
                 mesh.Draw();
             }

@@ -27,8 +27,7 @@ namespace PrimeiraEntrega
         Tanque tankEnimigo2;
         Tanque tankEnimigo3;
         List<Tanque> listaTanques;
-
-      
+        
         enum CameraAtiva
         {
             fps,
@@ -45,7 +44,6 @@ namespace PrimeiraEntrega
             graphics.PreferredBackBufferHeight = 800;
             graphics.PreferredBackBufferWidth = 1000;
         }
-
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -75,8 +73,7 @@ namespace PrimeiraEntrega
             rasterizerState.MultiSampleAntiAlias = true;
             GraphicsDevice.RasterizerState = rasterizerState;
             // TODO: use this.Content to load your game content here
-
-
+            
             //Camera.Initialize(GraphicsDevice);
 
             mapaAlturas = Content.Load<Texture2D>("terreno");
@@ -93,7 +90,6 @@ namespace PrimeiraEntrega
             listaTanques.Add(tankEnimigo2);
             listaTanques.Add(tankEnimigo3);
             
-
             cameraSurfaceFollow = new CameraSurfaceFollow(graphics, vertices, mapaAlturas.Width);
             camera = new CameraAula(graphics);
             cameraTank = new CameraTank(graphics, vertices, mapaAlturas.Width, tank.getPosition(), tank.getWorldMAtrix(), tank.view);
@@ -111,7 +107,6 @@ namespace PrimeiraEntrega
             tankEnimigo2.LoadContent(Content);
             tankEnimigo3.LoadContent(Content);
             GeneradorBalas.Initialize(tank, Content);
-          
         }
 
         /// <summary>
@@ -132,8 +127,7 @@ namespace PrimeiraEntrega
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-
+            
             escolherCamara();
             if (cameraAtiva == CameraAtiva.fps)
             {
@@ -168,8 +162,7 @@ namespace PrimeiraEntrega
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
-
+            
             if (cameraAtiva == CameraAtiva.fps)
             {
                 terreno.Draw(GraphicsDevice, cameraSurfaceFollow.view, cameraSurfaceFollow.projection);
@@ -180,8 +173,7 @@ namespace PrimeiraEntrega
                 GeneradorBalas.DrawBalas(cameraSurfaceFollow.view, cameraSurfaceFollow.projection);
 
                 //DebugShapeRenderer.Draw(gameTime, cameraSurfaceFollow.view, cameraSurfaceFollow.projection);
-
-
+                
             }
             else if (cameraAtiva == CameraAtiva.free)
             {
@@ -194,8 +186,6 @@ namespace PrimeiraEntrega
                 tankEnimigo2.Draw(camera.view, camera.projection);
                 tankEnimigo3.Draw(camera.view, camera.projection);
                 GeneradorBalas.DrawBalas(camera.view, camera.projection);
-
-
             }
             else
             {
@@ -208,13 +198,7 @@ namespace PrimeiraEntrega
                 tankEnimigo2.Draw(cameraTank.view, cameraTank.projection);
                 tankEnimigo3.Draw(cameraTank.view, cameraTank.projection);
                 GeneradorBalas.DrawBalas(cameraTank.view, cameraTank.projection);
-
-
             }
-
-
-
-
             base.Draw(gameTime);
         }
 
@@ -224,7 +208,6 @@ namespace PrimeiraEntrega
 
             if (kb.IsKeyDown(Keys.F1))
             {
-
                 cameraAtiva = CameraAtiva.fps;
             }
             if (kb.IsKeyDown(Keys.F2))
@@ -236,8 +219,5 @@ namespace PrimeiraEntrega
                 cameraAtiva = CameraAtiva.cameraTank;
             }
         }
-
-
-
     }
 }

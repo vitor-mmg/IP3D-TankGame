@@ -23,8 +23,7 @@ namespace PrimeiraEntrega
         VertexPositionNormalTexture[] vertices;
         int alturaMapa;
         MouseState posicaoRatoInicial;
-
-
+        
         public CameraTank(GraphicsDeviceManager graphics, VertexPositionNormalTexture[] vertices, int alturaMapa, Vector3 posicaoTank, Matrix worldTank, Matrix tankView)
         {
             this.alturaMapa = alturaMapa;
@@ -41,7 +40,6 @@ namespace PrimeiraEntrega
             Mouse.SetPosition(graphics.GraphicsDevice.Viewport.Height / 2, graphics.GraphicsDevice.Viewport.Width / 2);
             posicaoRatoInicial = Mouse.GetState();
             this.frente();
-
         }
 
         //surface follow
@@ -66,14 +64,11 @@ namespace PrimeiraEntrega
             zD = zC;
 
             //encontrar valor de Y de cada vertice
-
             yA = vertices[xA * alturaMapa + zA].Position.Y;
             yB = vertices[xB * alturaMapa + zB].Position.Y;
             yC = vertices[xC * alturaMapa + zC].Position.Y;
             yD = vertices[xD * alturaMapa + zD].Position.Y;
-
-
-
+            
             //calcular nova altura da camara
             float yAB, yCD, cameraY;
 
@@ -92,7 +87,6 @@ namespace PrimeiraEntrega
             //time = gameTime.ElapsedGameTime.Milliseconds;
             posicao = posicao + velocidade * direcao;
             target = posicao + direcao;//posicao + direcao;
-
         }
 
         public void moverTras(GameTime gameTime)
@@ -102,8 +96,7 @@ namespace PrimeiraEntrega
             posicao = posicao - velocidade * direcao;
             target = posicao + direcao;//posicao + direcao;
         }
-
-
+        
         public void rodarEsquerda(GameTime gameTime)
         {
             time = gameTime.ElapsedGameTime.Milliseconds;
@@ -149,14 +142,11 @@ namespace PrimeiraEntrega
             time = gameTime.ElapsedGameTime.Milliseconds;
             this.strafe = strafe + velocidade * time;
             posicao = posicao + velocidade * Vector3.Cross(direcao, Vector3.Up);
-
             target = posicao + direcao;
-
         }
 
         public void UpdateInput(GameTime gameTime, GraphicsDeviceManager graphics, Vector3 posicaoTank, Matrix worldTank)
         {
-
             verificarLimites();
             KeyboardState kb = Keyboard.GetState();
 
@@ -181,7 +171,6 @@ namespace PrimeiraEntrega
                 view = Matrix.CreateLookAt(posicao, target, Vector3.Up);
             }
 
-
             MouseState mouseState = Mouse.GetState();
             if (mouseState != posicaoRatoInicial)
             {
@@ -198,7 +187,6 @@ namespace PrimeiraEntrega
                 if (mouseState.Y > posicaoRatoInicial.Y || kb.IsKeyDown(Keys.Down))
                 {
                     this.rodarBaixo(gameTime);
-
                 }
                 if (mouseState.Y < posicaoRatoInicial.Y || kb.IsKeyDown(Keys.Up))
                 {
@@ -210,17 +198,11 @@ namespace PrimeiraEntrega
                 }
                 catch (Exception e)
                 { }
-
-
-
             }
-
-
         }
 
         public void updateCamera(Vector3 posicaoTank, Matrix worldTank, Matrix viewTank, Tanque tank)
         {
-
             //rotacao = Matrix.CreateFromYawPitchRoll(yaw, 0, pitch);
             KeyboardState kb = Keyboard.GetState();
             if (kb.IsKeyDown(Keys.D))
@@ -244,10 +226,7 @@ namespace PrimeiraEntrega
             rotacao = Matrix.CreateRotationY(MathHelper.ToRadians(tank.rotacaoY));
             Vector3 transformOffset = Vector3.Transform(offset, rotacao);
             posicao = transformOffset + posicaoTank;
-
             view = Matrix.CreateLookAt(posicao, posicaoTank, Vector3.Up);
-
-
         }
 
         public void verificarLimites()

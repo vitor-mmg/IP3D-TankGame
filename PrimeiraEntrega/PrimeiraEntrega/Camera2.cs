@@ -10,7 +10,6 @@ namespace PrimeiraEntrega
 {
     class CameraVersao2
     {
-
         Vector3 posicao, direcao, target;
         float velocidade, time;
         float grausPorPixel = 20 / 100;
@@ -31,10 +30,8 @@ namespace PrimeiraEntrega
             posicao = new Vector3(20, 20, 100);
             direcao = vetorBase;
             worldMatrix = Matrix.Identity;
-
         }
-
-
+        
         public void input(GameTime gameTime, GraphicsDeviceManager device)
         {
             KeyboardState kb = Keyboard.GetState();
@@ -62,7 +59,6 @@ namespace PrimeiraEntrega
             //teste
             if (kb.IsKeyDown(Keys.Right))
             {
-
                 time = gameTime.ElapsedGameTime.Milliseconds;
                 //yaw = yaw -velocidade * time / 100;
                 yaw -= 1f;
@@ -77,7 +73,6 @@ namespace PrimeiraEntrega
             }
             if (kb.IsKeyDown(Keys.Left))
             {
-
                 time = gameTime.ElapsedGameTime.Milliseconds;
                 //yaw = yaw +velocidade * time / 100;
                 yaw += 1f;
@@ -93,7 +88,6 @@ namespace PrimeiraEntrega
             }
             if (kb.IsKeyDown(Keys.Up))
             {
-
                 time = gameTime.ElapsedGameTime.Milliseconds;
                 //yaw = yaw -velocidade * time / 100;
                 pitch += 1f;
@@ -108,7 +102,6 @@ namespace PrimeiraEntrega
             }
             if (kb.IsKeyDown(Keys.Down))
             {
-
                 time = gameTime.ElapsedGameTime.Milliseconds;
                 //yaw = yaw +velocidade * time / 100;
                 pitch -= 1f;
@@ -122,13 +115,11 @@ namespace PrimeiraEntrega
                 target = posicao + direcao;
                 view = Matrix.CreateLookAt(posicao, target, Vector3.Up);
             }
-
             //rato
             MouseState mouseState = Mouse.GetState();
             //rotacao em x
             if (mouseState.X < posicaoRato.X)
             {
-
                 time = gameTime.ElapsedGameTime.Milliseconds;
                 //yaw = yaw -velocidade * time / 100;
                 yaw += 0.01f;
@@ -143,7 +134,6 @@ namespace PrimeiraEntrega
             }
             if (mouseState.X > posicaoRato.X)
             {
-
                 time = gameTime.ElapsedGameTime.Milliseconds;
                 //yaw = yaw +velocidade * time / 100;
                 yaw -= 0.01f;
@@ -155,17 +145,14 @@ namespace PrimeiraEntrega
 
                 target = posicao + direcao;
                 view = Matrix.CreateLookAt(posicao, target, Vector3.Up);
-
             }
             //rotacao em y
             if (mouseState.Y > posicaoRato.Y)
             {
-
                 view = Matrix.CreateLookAt(posicao, target, Vector3.Up);
             }
             if (mouseState.Y < posicaoRato.Y)
             {
-
                 view = Matrix.CreateLookAt(posicao, target, Vector3.Up);
             }
             try
@@ -175,10 +162,8 @@ namespace PrimeiraEntrega
             catch (Exception e) { }
             posicaoRato.X = mouseState.X;
             posicaoRato.Y = mouseState.Y;
-
         }
-
-
+        
         public void strafeEsquerda(GameTime gameTime, float strafe)
         {
             time = gameTime.ElapsedGameTime.Milliseconds;
@@ -216,6 +201,5 @@ namespace PrimeiraEntrega
             //Console.WriteLine(target);
             //view = Matrix.CreateLookAt(posicao, target, Vector3.Up);
         }
-
     }
 }

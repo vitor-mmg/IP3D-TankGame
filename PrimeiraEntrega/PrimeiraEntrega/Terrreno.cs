@@ -22,8 +22,7 @@ namespace PrimeiraEntrega
         int tamanhoMapa;
         Color[] valoresMapaAlturas;
         Texture2D texturaTerreno;
-
-
+        
         public Terreno(GraphicsDevice device, Texture2D imagemMapaAlturas, Texture2D texturaPlano, float tamanhoPlano, Texture2D textura)
         {
             larguraMapa = imagemMapaAlturas.Width;
@@ -33,7 +32,7 @@ namespace PrimeiraEntrega
             effect = new BasicEffect(device);
             worldMatrix = Matrix.Identity;
             float aspectRatio = (float)device.Viewport.Width / device.Viewport.Height;
-
+             
             effect.View = Matrix.CreateLookAt(new Vector3(0.0f, 0.0f, 10.0f), Vector3.Zero, Vector3.Up);//para onde aponta a camara
             effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45.0f), aspectRatio, 0.01f, 1000.0f);
             effect.LightingEnabled = true;
@@ -50,8 +49,7 @@ namespace PrimeiraEntrega
             effect.Texture = texturaTerreno;
             effect.TextureEnabled = true;
             effect.EmissiveColor = new Vector3(0, 0, 1);
-
-
+            
             //effect.LightingEnabled = true;
             //effect.EnableDefaultLighting();
 
@@ -60,8 +58,7 @@ namespace PrimeiraEntrega
             ////effect.VertexColorEnabled = true;
             //effect.Texture = this.textura;
             //effect.TextureEnabled = true;
-
-
+            
             lerMapaAlturas(imagemMapaAlturas);
             createGeometry(device);
 
@@ -123,8 +120,6 @@ namespace PrimeiraEntrega
                 }
             }
             //
-
-
             //aplicar textura
 
             //criar indice
@@ -135,16 +130,13 @@ namespace PrimeiraEntrega
             {
                 indice[2 * i] = (short)(i);
                 indice[2 * i + 1] = (short)(i + texturaMapa.Width);
-
             }
 
             //vertexBuffer = new VertexBuffer(device, typeof(VertexPositionColorTexture), vertices.GetLength(0), BufferUsage.WriteOnly);
             //indexBuffer = new IndexBuffer(device, typeof(short), indice.Length, BufferUsage.None);
-
-
+            
             //normais
-
-
+            
             for (int x = 0; x <= larguraMapa - 1; x++)
             {
                 for (int z = 0; z <= larguraMapa - 1; z++)
@@ -154,9 +146,6 @@ namespace PrimeiraEntrega
                     // centro
                     if (x > 0 && x < larguraMapa - 1 && z > 0 && z < larguraMapa - 1)
                     {
-
-
-
                         //com 8 cross's
                         VertexPositionNormalTexture verticeCima = vertices[(x * larguraMapa + z) - 1];
                         VertexPositionNormalTexture verticeCimaDireita = vertices[(x * larguraMapa + z) + larguraMapa - 1];
@@ -208,8 +197,7 @@ namespace PrimeiraEntrega
                         Vector3 vectorCima = verticeCima.Position - vertice.Position;
                         Vector3 vectorCimaDireita = verticeCimaDireita.Position - vertice.Position;
                         Vector3 vectorBaixoDireita = verticeBaixoDireita.Position - vertice.Position;
-
-
+                        
 
                         Vector3 normal1 = Vector3.Cross(vectorBaixo, vectorBaixoDireita);
                         Vector3 normal2 = Vector3.Cross(vectorBaixoDireita, vectorDireita);
@@ -220,9 +208,7 @@ namespace PrimeiraEntrega
                         Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2) + Vector3.Normalize(normal3) + Vector3.Normalize(normal4)) / 4;
 
                         vertices[x * larguraMapa + z].Normal = Normal;
-
-
-
+                        
                     }
                     // lado direito
                     if (x == larguraMapa - 1 && z != 0 && z != larguraMapa - 1)
@@ -239,8 +225,7 @@ namespace PrimeiraEntrega
                         Vector3 vectorBaixoEsquerda = verticeBaixoEsquerda.Position - vertice.Position;
                         Vector3 vectorCimaEsquerda = verticeCimaEsquerda.Position - vertice.Position;
 
-
-
+                        
                         Vector3 normal1 = Vector3.Cross(vectorCima, vectorCimaEsquerda);
                         Vector3 normal2 = Vector3.Cross(vectorCimaEsquerda, vectorEsquerda);
                         Vector3 normal3 = Vector3.Cross(vectorEsquerda, vectorBaixoEsquerda);
@@ -249,10 +234,8 @@ namespace PrimeiraEntrega
                         Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2) + Vector3.Normalize(normal3) + Vector3.Normalize(normal4)) / 4;
 
                         vertices[x * larguraMapa + z].Normal = Normal;
-
-
-
                     }
+
                     // lado superior
                     if (x != 0 && z == 0 && x != larguraMapa - 1)
                     {
@@ -277,9 +260,6 @@ namespace PrimeiraEntrega
                         Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2) + Vector3.Normalize(normal3) + Vector3.Normalize(normal4)) / 4;
 
                         vertices[x * larguraMapa + z].Normal = Normal;
-
-
-
                     }
 
                     // lado inferior
@@ -306,9 +286,8 @@ namespace PrimeiraEntrega
                         Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2) + Vector3.Normalize(normal3) + Vector3.Normalize(normal4)) / 4;
 
                         vertices[x * larguraMapa + z].Normal = Normal;
-
-
                     }
+
                     if (x == 0 && z == 0)
                     {
                         VertexPositionNormalTexture verticeDireita = vertices[(x * larguraMapa + z) + larguraMapa];
@@ -323,8 +302,8 @@ namespace PrimeiraEntrega
                         Vector3 normal2 = Vector3.Cross(vectorBaixoDireita, vectorDireita);
                         Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2)) / 2;
                         vertices[x * larguraMapa + z].Normal = Normal;
-
                     }
+
                     if (x == 0 && z == larguraMapa - 1)
                     {
                         VertexPositionNormalTexture verticeCima = vertices[(x * larguraMapa + z) - 1];
@@ -339,7 +318,6 @@ namespace PrimeiraEntrega
                         Vector3 normal2 = Vector3.Cross(vectorCimaDireita, vectorCima);
                         Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2)) / 2;
                         vertices[x * larguraMapa + z].Normal = Normal;
-
                     }
 
                     if (x == larguraMapa - 1 && z == 0)
@@ -356,7 +334,6 @@ namespace PrimeiraEntrega
                         Vector3 normal2 = Vector3.Cross(vectorBaixoEsquerda, vectorBaixo);
                         Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2)) / 2;
                         vertices[x * larguraMapa + z].Normal = Normal;
-
                     }
 
                     if (x == larguraMapa - 1 && z == larguraMapa - 1)
@@ -374,36 +351,23 @@ namespace PrimeiraEntrega
                         Vector3 Normal = (Vector3.Normalize(normal1) + Vector3.Normalize(normal2)) / 2;
                         vertices[x * larguraMapa + z].Normal = Normal;
                     }
-
                     //vertices superiores
-
                 }
-
-
-
             }
-
-
-
             //normais segundo round
-
-
-
-
         }
-
         //get vertices
         public VertexPositionNormalTexture[] getVertices()
         {
             return (vertices);
         }
+
         public void lerMapaAlturas(Texture2D texturaMapa)
         {
             valoresMapaAlturas = new Color[tamanhoMapa];
             texturaMapa.GetData(valoresMapaAlturas);
             alturas = new float[texturaMapa.Height, texturaMapa.Width];
-
-
+            
             /*z*texturaMapa da nos a linha + x para avancarmos*/
             for (int x = 0; x < texturaMapa.Height; x++)
             {
@@ -411,12 +375,8 @@ namespace PrimeiraEntrega
                 {
                     alturas[x, z] = valoresMapaAlturas[z * texturaMapa.Width + x].R;
                 }
-
                 //Console.WriteLine(alturas[i]);
             }
-
-
-
         }
 
         public void Draw(GraphicsDevice device, Matrix cameraView, Matrix cameraProj)
@@ -446,9 +406,6 @@ namespace PrimeiraEntrega
             //    vertices[i].Position + vertices[i].Normal,
             //    Color.Red);
             //}
-
-
-
         }
     }
 }

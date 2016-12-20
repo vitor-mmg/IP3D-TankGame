@@ -21,9 +21,7 @@ namespace PrimeiraEntrega
         //retorna o proximo valor double.
         public static float getRandomNextDouble()
         {
-
             return ((float)random.NextDouble());
-
         }
         //retorna o proximo valor inteiro.
         public static float getRandomNext()
