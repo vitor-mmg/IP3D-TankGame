@@ -241,6 +241,8 @@ namespace PrimeiraEntrega
                 {
                     boidControl(playerTank.position, listTanksInimigos);
                 }
+
+
                 if (bala != null)
                     bala.Update(gameTime, this);
             }

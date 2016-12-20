@@ -27,7 +27,7 @@ namespace PrimeiraEntrega
         Tanque tankEnimigo2;
         Tanque tankEnimigo3;
         List<Tanque> listaTanques;
-        
+
         enum CameraAtiva
         {
             fps,
