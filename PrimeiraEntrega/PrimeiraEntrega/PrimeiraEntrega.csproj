@@ -41,7 +41,7 @@
   <ItemGroup>
     <Compile Include="Balas.cs" />
     <Compile Include="Boid.cs" />
-    <Compile Include="Camera.cs" />
+    <Compile Include="GestorCameras.cs" />
     <Compile Include="Camera2.cs" />
     <Compile Include="CameraAula.cs" />
     <Compile Include="CameraSurfaceFollow.cs" />

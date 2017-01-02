@@ -23,7 +23,7 @@ namespace PrimeiraEntrega
         Color[] valoresMapaAlturas;
         Texture2D texturaTerreno;
         
-        public Terreno(GraphicsDevice device, Texture2D imagemMapaAlturas, Texture2D texturaPlano, float tamanhoPlano, Texture2D textura)
+        public Terreno(GraphicsDevice device, Texture2D imagemMapaAlturas, float tamanhoPlano, Texture2D textura)
         {
             larguraMapa = imagemMapaAlturas.Width;
             texturaTerreno = textura;

@@ -78,7 +78,7 @@ namespace PrimeiraEntrega
 
             mapaAlturas = Content.Load<Texture2D>("terreno");
             textura = Content.Load<Texture2D>("grass50x50");
-            terreno = new Terreno(GraphicsDevice, mapaAlturas, mapaAlturas, 1f, textura);
+            terreno = new Terreno(GraphicsDevice, mapaAlturas, 1f, textura);
             //terreno2 = new Terreno2(GraphicsDevice, mapaAlturas, mapaAlturas, 1f, textura);
             VertexPositionNormalTexture[] vertices = terreno.getVertices();
             tank = new Tanque(GraphicsDevice, terreno.getVertices(), terreno.larguraMapa, new Vector3(10, 20, 10), true, Content);
@@ -160,6 +160,7 @@ namespace PrimeiraEntrega
                     {
                         //tank.velocidade = 0;
                         Tank.velocidade = 0;
+                        
                     }
                     else
                     {

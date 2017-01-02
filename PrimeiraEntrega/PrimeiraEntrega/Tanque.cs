@@ -54,7 +54,7 @@ namespace PrimeiraEntrega
         BasicEffect Teffect;
         public bool tankDestroyed;
         float scale;
-        Vector3 direcaoFuga;
+      
         Vector3 acelaracao;
         Vector3 posicaoAnterior;
         // Shortcut references to the bones that we are going to animate.
@@ -160,7 +160,7 @@ namespace PrimeiraEntrega
             Teffect = new BasicEffect(device);
             Teffect.VertexColorEnabled = true;
             this.position = position;
-            positionCamera = position;
+            positionCamera = position;  
             vertices = vert;
             this.larguraMapa = larguraMapa;
             vetorBase = new Vector3(1, 0, 0);

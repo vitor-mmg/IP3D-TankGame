@@ -8,7 +8,7 @@ using System.Text;
 
 namespace PrimeiraEntrega
 {
-    public class Camera
+    public class GestorCameras
     {
         CameraAula cameraAula;
         CameraSurfaceFollow cameraSurface;
