@@ -41,3 +41,4 @@ C:\Users\Couto\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\ob
 C:\Users\Couto\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\obj\x86\Debug\PrimeiraEntrega.csprojResolveAssemblyReference.cache
 C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\grass50x50.jpg
 C:\Users\CoutoNero\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\bin\WindowsGL\Debug\Content\Sphere.xnb
+C:\Users\Couto\Documents\GitHub\IP3D-TankGame\PrimeiraEntrega\PrimeiraEntrega\obj\x86\Debug\PrimeiraEntrega.pdb
